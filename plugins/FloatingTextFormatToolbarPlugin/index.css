@@ -19,8 +19,11 @@
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   transition: opacity 0.5s;
-  height: 35px;
+  min-height: 35px;
   will-change: transform;
+  flex-wrap: wrap;
+  max-width: 100%;
+  height: auto;
 }
 
 .floating-text-format-popup button.popup-item {
