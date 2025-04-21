@@ -15,12 +15,13 @@ import Modal from '../ui/Modal';
 
 export default function useModal(): [
   JSX.Element | null,
-  (title: string, showModal: (onClose: () => void) => JSX.Element) => void,
+  (title: string, showModal: (onClose: () => void) => JSX.Element, closeOnClickOutside?: boolean, position?: "top" | "bottom" | "center") => void,
 ] {
   const [modalContent, setModalContent] = useState<null | {
     closeOnClickOutside: boolean;
     content: JSX.Element;
     title: string;
+    position?: "top" | "bottom" | "center";
   }>(null);
 
   const onClose = useCallback(() => {
@@ -31,11 +32,12 @@ export default function useModal(): [
     if (modalContent === null) {
       return null;
     }
-    const {title, content, closeOnClickOutside} = modalContent;
+    const {title, content, closeOnClickOutside, position} = modalContent;
     return (
       <Modal
         onClose={onClose}
         title={title}
+        position={position || "center"}
         closeOnClickOutside={closeOnClickOutside}>
         {content}
       </Modal>
@@ -48,11 +50,13 @@ export default function useModal(): [
       // eslint-disable-next-line no-shadow
       getContent: (onClose: () => void) => JSX.Element,
       closeOnClickOutside = false,
+      position: "top" | "bottom" | "center" = "center",
     ) => {
       setModalContent({
         closeOnClickOutside,
         content: getContent(onClose),
         title,
+        position
       });
     },
     [onClose],

@@ -263,7 +263,7 @@ export function AutoEmbedDialog({
   };
 
   return (
-    <div style={{width: '600px'}}>
+    <div style={{width: '600px',maxWidth:"calc(100vw - 54px)"}} className="AutoEmbedDialog">
       <div className="Input__wrapper">
         <input
           type="text"

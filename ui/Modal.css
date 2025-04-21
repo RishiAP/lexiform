@@ -25,7 +25,7 @@
 .Modal__modal {
   padding: 20px;
   min-height: 100px;
-  min-width: 300px;
+  min-width: 280px;
   display: flex;
   flex-grow: 0px;
   background-color: #fff;
@@ -33,6 +33,14 @@
   position: relative;
   box-shadow: 0 0 20px 0 #444;
   border-radius: 10px;
+}
+.modal-top{
+  justify-content: start;
+  padding-top: 4rem;
+}
+.modal-bottom{
+  justify-content: end;
+  padding-bottom: 4rem;
 }
 .Modal__title {
   color: #444;

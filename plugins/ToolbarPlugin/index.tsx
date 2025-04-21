@@ -1136,7 +1136,7 @@ export default function ToolbarPlugin({
                         activeEditor={activeEditor}
                         onClose={onClose}
                       />
-                    ));
+                    ),false,"top");
                   }}
                   className="item">
                   <i className="icon equation" />

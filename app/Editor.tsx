@@ -68,6 +68,7 @@ import TwitterPlugin from '@/plugins/TwitterPlugin';
 import YouTubePlugin from '@/plugins/YouTubePlugin';
 import ContentEditable from '@/ui/ContentEditable';
 import { DEFAULT_SETTINGS } from './appSettings';
+import {$generateHtmlFromNodes} from '@lexical/html';
 
 export default function Editor(): JSX.Element {
   const {historyState} = useSharedHistoryContext();
@@ -227,6 +228,16 @@ export default function Editor(): JSX.Element {
           shouldPreserveNewLinesInMarkdown
         />
       </div>
+      <button type='button' className='getContentsButton' onClick={() => {
+        editor.update(() => {
+            const html = $generateHtmlFromNodes(editor, null);
+            console.log(html);
+            console.log(editor.getEditorState().toJSON());
+            // Save `html` to your backend or localStorage
+          });
+        }}>
+        Get Contents
+      </button>
     </>
   );
 }

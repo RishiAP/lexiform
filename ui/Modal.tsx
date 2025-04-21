@@ -20,11 +20,13 @@ function PortalImpl({
   children,
   title,
   closeOnClickOutside,
+  position="center"
 }: {
   children: ReactNode;
   closeOnClickOutside: boolean;
   onClose: () => void;
   title: string;
+  position?: "top" | "bottom" | "center"
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -71,7 +73,7 @@ function PortalImpl({
   }, [closeOnClickOutside, onClose]);
 
   return (
-    <div className="Modal__overlay" role="dialog">
+    <div className={`Modal__overlay modal-${position}`} role="dialog">
       <div className="Modal__modal" tabIndex={-1} ref={modalRef}>
         <h2 className="Modal__title">{title}</h2>
         <button
@@ -92,16 +94,19 @@ export default function Modal({
   children,
   title,
   closeOnClickOutside = false,
+  position="center"
 }: {
   children: ReactNode;
   closeOnClickOutside?: boolean;
   onClose: () => void;
   title: string;
+  position?: "top" | "bottom" | "center";
 }): JSX.Element {
   return createPortal(
     <PortalImpl
       onClose={onClose}
       title={title}
+      position={position}
       closeOnClickOutside={closeOnClickOutside}>
       {children}
     </PortalImpl>,

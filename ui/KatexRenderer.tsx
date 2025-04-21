@@ -50,6 +50,7 @@ export default function KatexRenderer({
         alt=""
       />
       <span
+        title='double click to edit'
         role="button"
         tabIndex={-1}
         onDoubleClick={onDoubleClick}
