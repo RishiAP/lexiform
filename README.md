@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# @rishiap/lexiform
 
-## Getting Started
+Lexiform is a highly polished, lightweight, headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`) and styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
 
-First, run the development server:
+It abstracts away the complexity of Lexical's architecture and provides a stunning, modern, single `<LexicalEditor>` component for quick integration into Next.js, Vite, and other React apps.
+
+## Features
+
+- **Drop-in `<LexicalEditor />` Component**: Start using a rich text editor instantly.
+- **Beautiful UI**: Polished toolbar with vanilla CSS combined with robust Radix UI primitives.
+- **Native Shadcn & Tailwind Compatibility**: Inherits global CSS variables and natively supports standard `.dark` and `.light` theme classes, syncing perfectly with `next-themes`.
+- **Slash Menu (`/`) Component Picker**: Type `/` to bring up a Notion-style block menu.
+- **Floating Toolbar**: Select any text to instantly see a floating toolbar with quick formatting options (Bold, Italic, Link, Case formatting, Subscript, etc).
+- **Backend-Safe Serializers**: Includes SSR/backend-friendly HTML to Lexical JSON (`htmlToLexicalJSON`) and JSON to HTML (`lexicalJSONToHTML`) serializers.
+- **Feature-Rich Editing**:
+  - Headings & Block types (H1-H6, Quote, Code, Lists)
+  - Text Formatting (Bold, Italic, Underline, Strikethrough, Code, Subscript, Superscript, Case conversions)
+  - Color Pickers (Font Color & Background Color)
+  - Alignments (Left, Center, Right, Justify)
+  - Interactive Links & Floating Editors
+  - History (Undo/Redo)
+- **Advanced Nodes & Plugins**:
+  - Excalidraw whiteboards
+  - Mathematics/Equations (KaTeX)
+  - Polls
+  - Layout / Columns
+  - Embeds: YouTube, X (Twitter), Figma
+  - Collapsible sections
+- **Controlled Component**: Pass `value` and `onChange` seamlessly like a standard HTML input.
+- **ESM & Headless Support**: Modern build system using `tsup`, ensuring compatibility across various React environments.
+
+## Installation
 
 ```bash
-npm run dev
+npm install @rishiap/lexiform
 # or
-yarn dev
+yarn add @rishiap/lexiform
 # or
-pnpm dev
-# or
-bun dev
+pnpm add @rishiap/lexiform
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> **Note**: Lexiform relies on modern React (`>=18.0.0`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Using Lexiform in your app is as simple as importing the editor and its stylesheet.
 
-## Learn More
+```tsx
+"use client"; // If using Next.js App Router
 
-To learn more about Next.js, take a look at the following resources:
+import { useState } from 'react';
+import { 
+  LexicalEditor, 
+  ExtendedNodes, 
+  ComponentPickerPlugin,
+  EquationsPlugin,
+  ExcalidrawPlugin,
+  ImagesPlugin,
+  YouTubePlugin 
+} from '@rishiap/lexiform';
+import '@rishiap/lexiform/styles.css'; // Don't forget the CSS!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+export default function MyEditor() {
+  const [content, setContent] = useState<string>('');
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  return (
+    <div className="border rounded-xl shadow-sm p-4">
+      <LexicalEditor
+        value={content}
+        onChange={(val) => setContent(val)}
+        outputFormat="json" // or "html"
+        placeholder="Start typing..."
+        nodes={ExtendedNodes}
+        plugins={
+          <>
+            <ComponentPickerPlugin />
+            <EquationsPlugin />
+            <ExcalidrawPlugin />
+            <ImagesPlugin />
+            <YouTubePlugin />
+            {/* Add more plugins as needed */}
+          </>
+        }
+      />
+    </div>
+  );
+}
+```
 
-## Deploy on Vercel
+## Theming & Dark Mode
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Lexiform is built to be a team player. Its internal variables automatically look for standard Shadcn UI variables (`--background`, `--foreground`, `--primary`, etc.).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If your app uses `next-themes` (or manually applies `.dark` classes to the `<html>` or `<body>` tag), Lexiform will seamlessly switch to its dark theme. 
+
+If you want to manually force themes without `next-themes`, apply the `lexiform-dark` or `lexiform-light` classes.
+
+## Serializers
+
+Lexiform exports utilities for easily converting between Lexical JSON format and static HTML, making it easy to save to a database and render safely on the frontend.
+
+```tsx
+import { lexicalJSONToHTML, htmlToLexicalJSON } from '@rishiap/lexiform';
+
+// Generate HTML from JSON
+const htmlString = lexicalJSONToHTML(lexicalJsonString);
+
+// Parse HTML back into Lexical JSON (for editing)
+const jsonString = htmlToLexicalJSON(htmlString);
+```
+
+## Available Plugins
+Lexiform exports many plugins to extend the base editor. Simply pass them into the `plugins` prop alongside `ExtendedNodes` in the `nodes` prop.
+
+*   `ComponentPickerPlugin` (Enables `/` menu)
+*   `EquationsPlugin` (Inline & Block KaTeX)
+*   `ExcalidrawPlugin` (Interactive whiteboards)
+*   `ImagesPlugin` (Image uploads/embeds)
+*   `LayoutPlugin` (Multi-column layouts)
+*   `PollPlugin` (Interactive voting)
+*   `YouTubePlugin`, `TwitterPlugin`, `FigmaPlugin` (Embeds)
+*   `CollapsiblePlugin` (Toggle sections)
+
+## Development
+
+Lexiform is built using `tsup`. 
+1. Install dependencies: `npm install`
+2. Build the package: `npm run build`
+3. Link and test locally in the `demo/` folder: `cd demo && npm run dev`
+
+## License
+MIT

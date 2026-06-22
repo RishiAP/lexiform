@@ -1,0 +1,73 @@
+
+.Modal__overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  flex-direction: column;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  flex-grow: 0px;
+  flex-shrink: 1px;
+  z-index: 100;
+}
+.Modal__modal {
+  padding: 24px;
+  min-height: 100px;
+  min-width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-grow: 0px;
+  background-color: var(--lexiform-background);
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--lexiform-border);
+  border-radius: var(--lexiform-radius);
+  color: var(--lexiform-foreground);
+}
+.modal-top{
+  justify-content: start;
+  padding-top: 4rem;
+}
+.modal-bottom{
+  justify-content: end;
+  padding-bottom: 4rem;
+}
+.Modal__title {
+  margin: 0px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--lexiform-border);
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
+.Modal__closeButton {
+  border: 0px;
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  border-radius: calc(var(--lexiform-radius) - 2px);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--lexiform-muted-foreground);
+  transition: all 0.2s;
+}
+.Modal__closeButton:hover {
+  background-color: var(--lexiform-accent);
+  color: var(--lexiform-foreground);
+}
+.Modal__content {
+  padding-top: 20px;
+  font-size: 0.875rem;
+}

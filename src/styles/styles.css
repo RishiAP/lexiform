@@ -1,0 +1,554 @@
+@import '../themes/DefaultTheme.css';
+
+:root {
+  --lexiform-background: hsl(var(--background, 0 0% 100%));
+  --lexiform-foreground: hsl(var(--foreground, 240 10% 3.9%));
+  --lexiform-card: hsl(var(--card, 0 0% 100%));
+  --lexiform-card-foreground: hsl(var(--card-foreground, 240 10% 3.9%));
+  --lexiform-popover: hsl(var(--popover, 0 0% 100%));
+  --lexiform-popover-foreground: hsl(var(--popover-foreground, 240 10% 3.9%));
+  --lexiform-primary: hsl(var(--primary, 240 5.9% 10%));
+  --lexiform-primary-foreground: hsl(var(--primary-foreground, 0 0% 98%));
+  --lexiform-secondary: hsl(var(--secondary, 240 4.8% 95.9%));
+  --lexiform-secondary-foreground: hsl(var(--secondary-foreground, 240 5.9% 10%));
+  --lexiform-muted: hsl(var(--muted, 240 4.8% 95.9%));
+  --lexiform-muted-foreground: hsl(var(--muted-foreground, 240 3.8% 46.1%));
+  --lexiform-accent: hsl(var(--accent, 240 4.8% 95.9%));
+  --lexiform-accent-foreground: hsl(var(--accent-foreground, 240 5.9% 10%));
+  --lexiform-destructive: hsl(var(--destructive, 0 84.2% 60.2%));
+  --lexiform-destructive-foreground: hsl(var(--destructive-foreground, 0 0% 98%));
+  --lexiform-border: hsl(var(--border, 240 5.9% 90%));
+  --lexiform-input: hsl(var(--input, 240 5.9% 90%));
+  --lexiform-ring: hsl(var(--ring, 240 10% 3.9%));
+  --lexiform-radius: var(--radius, 0.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.lexiform-light):not(.light) {
+    --lexiform-background: hsl(var(--background, 240 10% 3.9%));
+    --lexiform-foreground: hsl(var(--foreground, 0 0% 98%));
+    --lexiform-card: hsl(var(--card, 240 10% 3.9%));
+    --lexiform-card-foreground: hsl(var(--card-foreground, 0 0% 98%));
+    --lexiform-popover: hsl(var(--popover, 240 10% 3.9%));
+    --lexiform-popover-foreground: hsl(var(--popover-foreground, 0 0% 98%));
+    --lexiform-primary: hsl(var(--primary, 0 0% 98%));
+    --lexiform-primary-foreground: hsl(var(--primary-foreground, 240 5.9% 10%));
+    --lexiform-secondary: hsl(var(--secondary, 240 3.7% 15.9%));
+    --lexiform-secondary-foreground: hsl(var(--secondary-foreground, 0 0% 98%));
+    --lexiform-muted: hsl(var(--muted, 240 3.7% 15.9%));
+    --lexiform-muted-foreground: hsl(var(--muted-foreground, 240 5% 64.9%));
+    --lexiform-accent: hsl(var(--accent, 240 3.7% 15.9%));
+    --lexiform-accent-foreground: hsl(var(--accent-foreground, 0 0% 98%));
+    --lexiform-destructive: hsl(var(--destructive, 0 62.8% 30.6%));
+    --lexiform-destructive-foreground: hsl(var(--destructive-foreground, 0 0% 98%));
+    --lexiform-border: hsl(var(--border, 240 3.7% 15.9%));
+    --lexiform-input: hsl(var(--input, 240 3.7% 15.9%));
+    --lexiform-ring: hsl(var(--ring, 240 4.9% 83.9%));
+  }
+}
+
+:root.lexiform-dark, .lexiform-dark, :root.dark, .dark {
+  --lexiform-background: hsl(var(--background, 240 10% 3.9%));
+  --lexiform-foreground: hsl(var(--foreground, 0 0% 98%));
+  --lexiform-card: hsl(var(--card, 240 10% 3.9%));
+  --lexiform-card-foreground: hsl(var(--card-foreground, 0 0% 98%));
+  --lexiform-popover: hsl(var(--popover, 240 10% 3.9%));
+  --lexiform-popover-foreground: hsl(var(--popover-foreground, 0 0% 98%));
+  --lexiform-primary: hsl(var(--primary, 0 0% 98%));
+  --lexiform-primary-foreground: hsl(var(--primary-foreground, 240 5.9% 10%));
+  --lexiform-secondary: hsl(var(--secondary, 240 3.7% 15.9%));
+  --lexiform-secondary-foreground: hsl(var(--secondary-foreground, 0 0% 98%));
+  --lexiform-muted: hsl(var(--muted, 240 3.7% 15.9%));
+  --lexiform-muted-foreground: hsl(var(--muted-foreground, 240 5% 64.9%));
+  --lexiform-accent: hsl(var(--accent, 240 3.7% 15.9%));
+  --lexiform-accent-foreground: hsl(var(--accent-foreground, 0 0% 98%));
+  --lexiform-destructive: hsl(var(--destructive, 0 62.8% 30.6%));
+  --lexiform-destructive-foreground: hsl(var(--destructive-foreground, 0 0% 98%));
+  --lexiform-border: hsl(var(--border, 240 3.7% 15.9%));
+  --lexiform-input: hsl(var(--input, 240 3.7% 15.9%));
+  --lexiform-ring: hsl(var(--ring, 240 4.9% 83.9%));
+}
+
+/* Lexiform Editor Container Styles */
+
+.Lexiform__editorContainer {
+  border: 1px solid var(--lexiform-border);
+  border-radius: var(--lexiform-radius);
+  background-color: var(--lexiform-background);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--lexiform-foreground);
+  width: 100%;
+}
+
+.Lexiform__editorInner {
+  position: relative;
+  flex-grow: 1;
+}
+
+.Lexiform__editorScroller {
+  min-height: 150px;
+  max-height: 600px;
+  overflow: auto;
+  padding: 15px;
+}
+
+.Lexiform__editor {
+  position: relative;
+}
+
+.LexiformContentEditable__root {
+  min-height: 150px;
+  resize: none;
+  font-size: 15px;
+  outline: none;
+  padding-bottom: 20px;
+}
+
+.LexiformContentEditable__placeholder {
+  color: var(--lexiform-muted-foreground);
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 0;
+  left: 0;
+  font-size: 15px;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+}
+
+/* Toolbar Styles */
+.Lexiform__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 8px;
+  background: var(--lexiform-muted);
+  border-bottom: 1px solid var(--lexiform-border);
+  gap: 4px;
+}
+
+.Lexiform__toolbarDivider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--lexiform-border);
+  margin: 0 4px;
+}
+
+.Lexiform__toolbarButton {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lexiform-muted-foreground);
+  transition: background-color 0.15s ease;
+}
+
+.Lexiform__toolbarButton:hover:not(:disabled) {
+  background-color: var(--lexiform-accent);
+}
+
+.Lexiform__toolbarButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.Lexiform__toolbarButton.active {
+  background-color: var(--lexiform-border);
+  color: var(--lexiform-foreground);
+}
+
+.Lexiform__fontSizeWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.Lexiform__fontSizeInput {
+  width: 40px;
+  text-align: center;
+  border: 1px solid var(--lexiform-border);
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  padding: 4px;
+  font-size: 13px;
+  margin: 0 4px;
+  appearance: none;
+}
+
+.Lexiform__fontSizeInput::-webkit-outer-spin-button,
+.Lexiform__fontSizeInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.Lexiform__blockTypeButton, .Lexiform__fontFamilyButton {
+  min-width: 120px;
+  justify-content: space-between;
+}
+
+/* Dropdown Menu Styles (Radix) */
+.Lexiform__dropdownContent {
+  background-color: var(--lexiform-background);
+  border-radius: calc(var(--lexiform-radius) - 2px);
+  padding: 5px;
+  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  min-width: 150px;
+  z-index: 1000;
+  border: 1px solid var(--lexiform-border);
+}
+
+.Lexiform__dropdownItem {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--lexiform-foreground);
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  position: relative;
+  user-select: none;
+  outline: none;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.Lexiform__dropdownItem:focus, .Lexiform__dropdownItem:hover {
+  background-color: var(--lexiform-accent);
+  color: var(--lexiform-foreground);
+}
+
+.Lexiform__dropdownItem.active {
+  background-color: var(--lexiform-secondary);
+  font-weight: 500;
+}
+
+.Lexiform__dropdownSeparator {
+  height: 1px;
+  background-color: var(--lexiform-accent);
+  margin: 5px;
+}
+
+.Lexiform__dropdownButtonText {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.Lexiform__dropdownButtonIcon {
+  display: flex;
+}
+
+.Lexiform__dropdownCheck {
+  display: flex;
+  margin-left: auto;
+  color: var(--lexiform-foreground);
+}
+
+/* Color Picker */
+.Lexiform__popoverContent {
+  background-color: var(--lexiform-background);
+  border-radius: calc(var(--lexiform-radius) - 2px);
+  padding: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--lexiform-border);
+  z-index: 1000;
+}
+
+.Lexiform__colorIndicator {
+  width: 18px;
+  height: 18px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Lexiform__colorLetter {
+  font-size: 11px;
+  font-weight: bold;
+  color: inherit;
+  mix-blend-mode: difference;
+}
+
+.Lexiform__colorPickerWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Lexiform__colorPickerInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.Lexiform__colorPickerInputWrapper label {
+  font-size: 12px;
+  color: var(--lexiform-muted-foreground);
+}
+
+.Lexiform__colorPickerInput {
+  flex-grow: 1;
+  border: 1px solid var(--lexiform-border);
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.Lexiform__colorPickerBasic {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+
+.Lexiform__colorPickerBasicItem {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  cursor: pointer;
+  padding: 0;
+}
+
+.Lexiform__colorPickerBasicItem.active {
+  border-color: var(--lexiform-foreground);
+  box-shadow: 0 0 0 1px #fff inset;
+}
+
+.Lexiform__colorPickerSaturation {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  cursor: crosshair;
+  background-image: linear-gradient(transparent, black), linear-gradient(to right, white, transparent);
+}
+
+.Lexiform__colorPickerCursor {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid white;
+  border-radius: 50%;
+  transform: translate(-6px, -6px);
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+
+.Lexiform__colorPickerHue {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  border-radius: calc(var(--lexiform-radius) - 2px);
+  cursor: crosshair;
+  background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+}
+
+.Lexiform__colorPickerHueCursor {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-radius: 50%;
+  transform: translate(-8px, -2px);
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+
+.Lexiform__colorPickerPreview {
+  width: 100%;
+  height: 24px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  border: 1px solid var(--lexiform-border);
+}
+
+/* Floating Link Editor */
+.Lexiform__linkEditor {
+  position: absolute;
+  z-index: 100;
+  top: -10000px;
+  left: -10000px;
+  margin-top: -6px;
+  max-width: 300px;
+  width: 100%;
+  opacity: 0;
+  background-color: var(--lexiform-background);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  border-radius: var(--lexiform-radius);
+  transition: opacity 0.5s;
+}
+
+.Lexiform__linkEditorForm {
+  display: flex;
+  padding: 8px;
+  gap: 8px;
+  align-items: center;
+}
+
+.Lexiform__linkInput {
+  flex-grow: 1;
+  border: 1px solid var(--lexiform-border);
+  padding: 6px 10px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  font-size: 14px;
+  outline: none;
+}
+
+.Lexiform__linkInput:focus {
+  border-color: var(--lexiform-primary);
+  box-shadow: 0 0 0 1px var(--lexiform-primary);
+}
+
+.Lexiform__linkActions {
+  display: flex;
+  gap: 4px;
+}
+
+.Lexiform__linkActionButton {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lexiform-muted-foreground);
+}
+
+.Lexiform__linkActionButton:hover {
+  background-color: var(--lexiform-accent);
+}
+
+.Lexiform__linkActionButton.primary {
+  color: #10b981;
+}
+
+.Lexiform__linkActionButton.primary:hover {
+  background-color: #ecfdf5;
+}
+
+.Lexiform__linkView {
+  display: flex;
+  padding: 8px 12px;
+  gap: 8px;
+  align-items: center;
+}
+
+.Lexiform__linkAnchor {
+  flex-grow: 1;
+  color: var(--lexiform-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.Lexiform__linkAnchor:hover {
+  text-decoration: underline;
+}
+
+/* Dialog */
+.Lexiform__dialogOverlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.Lexiform__dialogContent {
+  background-color: var(--lexiform-background);
+  border-radius: var(--lexiform-radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 450px;
+  max-height: 85vh;
+  padding: 20px;
+  z-index: 10000;
+}
+
+.Lexiform__dialogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.Lexiform__dialogTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.Lexiform__dialogClose {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--lexiform-muted-foreground);
+  padding: 4px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  display: flex;
+}
+
+.Lexiform__dialogClose:hover {
+  background-color: var(--lexiform-accent);
+}
+
+.Lexiform__dialogBody {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Floating Text Format Toolbar */
+.Lexiform__floatingTextFormatToolbar {
+  display: flex;
+  background: var(--lexiform-background);
+  padding: 4px;
+  border-radius: var(--lexiform-radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--lexiform-border);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  will-change: transform;
+  gap: 2px;
+}
+
+.Lexiform__floatingToolbarButton {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  border-radius: calc(var(--lexiform-radius) - 4px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lexiform-muted-foreground);
+  transition: background-color 0.15s ease;
+}
+
+.Lexiform__floatingToolbarButton:hover {
+  background-color: var(--lexiform-accent);
+}
+
+.Lexiform__floatingToolbarButton.active {
+  background-color: var(--lexiform-secondary);
+  color: var(--lexiform-foreground);
+}
+
+.Lexiform__floatingToolbarDivider {
+  width: 1px;
+  background-color: var(--lexiform-border);
+  margin: 4px;
+}

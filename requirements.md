@@ -2,9 +2,10 @@
 
 ## Context
 
-**Source repository:** https://github.com/RishiAP/lexical  
+**Package repository (this repo):** https://github.com/RishiAP/lexiform  
+**Original application (reference/demo):** https://github.com/RishiAP/lexical  
 **Live demo:** https://lexical-editor-react.vercel.app  
-**Goal:** Extract the existing Lexical-based rich-text editor from the Next.js app and publish it as a reusable, self-contained npm package named `@rishiap/lexiform`. The package will provide a frontend React component plus a small set of backend-safe serializer utilities for server-side processing and conversions.
+**Goal:** This repository contains the canonical source for the `@rishiap/lexiform` package. The `src/` directory is the library source to be built and published; `demo/` contains the original Next.js demo used for local development only. The package will provide a frontend React component plus a small set of backend-safe serializer utilities for server-side processing and conversions.
 
 ---
 

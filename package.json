@@ -2,7 +2,7 @@
   "name": "@rishiap/lexiform",
   "version": "0.1.0",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
-  "author": "Rishi AP <your-email>",
+  "author": "RishiAP <your-email>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,39 +13,77 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
-    "./styles": "./dist/styles.css"
+    "./styles.css": "./dist/index.css"
   },
-  "files": ["dist", "README.md"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "keywords": [
+    "lexical",
+    "rich-text",
+    "editor",
+    "react",
+    "wysiwyg",
+    "radix-ui"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "demo": "cd demo && npm run dev",
+    "prepublishOnly": "npm run build",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@excalidraw/excalidraw": "^0.18.1",
+    "@lexical/file": "^0.45.0",
+    "@types/katex": "^0.16.8",
+    "katex": "^0.17.0",
+    "mathlive": "^0.110.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  },
   "dependencies": {
-    "lexical": "^0.30.0",
-    "@lexical/react": "^0.30.0",
-    "@lexical/rich-text": "^0.30.0",
-    "@lexical/list": "^0.30.0",
-    "@lexical/link": "^0.30.0",
-    "@lexical/code": "^0.30.0",
-    "@lexical/history": "^0.30.0",
-    "@lexical/selection": "^0.30.0",
-    "@lexical/utils": "^0.30.0",
-    "@lexical/markdown": "^0.30.0"
+    "@lexical/clipboard": "^0.45.0",
+    "@lexical/code": "^0.45.0",
+    "@lexical/code-prism": "^0.45.0",
+    "@lexical/hashtag": "^0.45.0",
+    "@lexical/headless": "^0.45.0",
+    "@lexical/history": "^0.45.0",
+    "@lexical/html": "^0.45.0",
+    "@lexical/link": "^0.45.0",
+    "@lexical/list": "^0.45.0",
+    "@lexical/mark": "^0.45.0",
+    "@lexical/markdown": "^0.45.0",
+    "@lexical/overflow": "^0.45.0",
+    "@lexical/react": "^0.45.0",
+    "@lexical/rich-text": "^0.45.0",
+    "@lexical/selection": "^0.45.0",
+    "@lexical/utils": "^0.45.0",
+    "lexical": "^0.45.0",
+    "lucide-react": "^1.21.0",
+    "radix-ui": "^1.0.0",
+    "react-icons": "^5.6.0"
   },
   "devDependencies": {
-    "tsup": "^6.0.0",
-    "typescript": "^5.0.0",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^6.0.3"
   }
 }

@@ -1,0 +1,150 @@
+import '../styles/styles.css';
+
+import {LexicalComposer} from '@lexical/react/LexicalComposer';
+import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
+import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
+import {AutoFocusPlugin} from '@lexical/react/LexicalAutoFocusPlugin';
+import {ListPlugin} from '@lexical/react/LexicalListPlugin';
+import {CheckListPlugin} from '@lexical/react/LexicalCheckListPlugin';
+import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
+import {ClearEditorPlugin} from '@lexical/react/LexicalClearEditorPlugin';
+import {HashtagPlugin} from '@lexical/react/LexicalHashtagPlugin';
+import {LinkPlugin} from '@lexical/react/LexicalLinkPlugin';
+import {AutoLinkPlugin} from '@lexical/react/LexicalAutoLinkPlugin';
+import {HorizontalRulePlugin} from '@lexical/react/LexicalHorizontalRulePlugin';
+import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
+import {TRANSFORMERS} from '@lexical/markdown';
+import {LexicalErrorBoundary} from '@lexical/react/LexicalErrorBoundary';
+import {SharedHistoryContext} from '../contexts/SharedHistoryContext';
+import {ToolbarContext} from '../contexts/ToolbarContext';
+import {ToolbarPlugin} from './Toolbar/ToolbarPlugin';
+import {OnChangePlugin} from './plugins/OnChangePlugin';
+import {ControlledValuePlugin} from './plugins/ControlledValuePlugin';
+import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
+import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
+import {CodeHighlightPlugin} from './plugins/CodeHighlightPlugin';
+import {LexicalContentEditable} from '../ui/ContentEditable';
+import {editorNodes} from '../nodes/EditorNodes';
+import theme from '../themes/DefaultTheme';
+import {LexicalEditorProps} from '../types';
+
+const MATCHERS = [
+  (text: string) => {
+    const match = /(?:^|\s)(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*))/.exec(
+      text,
+    );
+    if (match !== null) {
+      return {
+        index: match.index,
+        length: match[0].length,
+        text: match[0],
+        url: match[1],
+      };
+    }
+    return null;
+  },
+];
+
+export function LexicalEditor({
+  value,
+  onChange,
+  outputFormat = 'json',
+  placeholder = 'Enter some text...',
+  readOnly = false,
+  className = '',
+  style,
+  autoFocus = false,
+  nodes,
+  plugins,
+}: LexicalEditorProps) {
+  const initialConfig = {
+    namespace: 'LexiformEditor',
+    theme,
+    nodes: nodes ? [...editorNodes, ...nodes] : editorNodes,
+    editable: !readOnly,
+    onError: (error: Error) => {
+      console.error(error);
+    },
+  };
+
+  return (
+    <LexicalComposer initialConfig={initialConfig}>
+      <SharedHistoryContext>
+        <ToolbarContext>
+          <div className={`Lexiform__editorContainer ${className}`} style={style}>
+            <ToolbarPluginWrapper />
+            
+            <div className="Lexiform__editorInner">
+              <RichTextPlugin
+                contentEditable={
+                  <div className="Lexiform__editorScroller">
+                    <div className="Lexiform__editor" ref={null}>
+                      <LexicalContentEditable placeholder={placeholder} />
+                    </div>
+                  </div>
+                }
+                ErrorBoundary={LexicalErrorBoundary}
+              />
+              
+              <HistoryPlugin />
+              {autoFocus && <AutoFocusPlugin />}
+              <ListPlugin />
+              <CheckListPlugin />
+              <TabIndentationPlugin />
+              <ClearEditorPlugin />
+              <HashtagPlugin />
+              <LinkPlugin />
+              <AutoLinkPlugin matchers={MATCHERS} />
+              <HorizontalRulePlugin />
+              <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+              <CodeHighlightPlugin />
+              <FloatingLinkEditorPluginWrapper />
+              <FloatingTextFormatToolbarPluginWrapper />
+              {plugins}
+
+              {value !== undefined && (
+                <ControlledValuePlugin value={value} format={outputFormat} />
+              )}
+              {onChange && (
+                <OnChangePlugin onChange={onChange} outputFormat={outputFormat} />
+              )}
+            </div>
+          </div>
+        </ToolbarContext>
+      </SharedHistoryContext>
+    </LexicalComposer>
+  );
+}
+
+// Wrapping components that need access to composer context
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {useState} from 'react';
+
+function ToolbarPluginWrapper() {
+  const [editor] = useLexicalComposerContext();
+  const [activeEditor, setActiveEditor] = useState(editor);
+  const [isLinkEditMode, setIsLinkEditMode] = useState(false);
+  
+  return (
+    <ToolbarPlugin 
+      editor={editor} 
+      activeEditor={activeEditor} 
+      setActiveEditor={setActiveEditor} 
+      setIsLinkEditMode={setIsLinkEditMode} 
+    />
+  );
+}
+
+function FloatingLinkEditorPluginWrapper() {
+  const [isLinkEditMode, setIsLinkEditMode] = useState(false);
+  return (
+    <FloatingLinkEditorPlugin
+      isLinkEditMode={isLinkEditMode}
+      setIsLinkEditMode={setIsLinkEditMode}
+    />
+  );
+}
+
+function FloatingTextFormatToolbarPluginWrapper() {
+  return <FloatingTextFormatToolbarPlugin />;
+}
