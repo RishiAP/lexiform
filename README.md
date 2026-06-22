@@ -12,6 +12,7 @@ It abstracts away the complexity of Lexical's architecture and provides a stunni
 - **Native Shadcn & Tailwind Compatibility**: Inherits global CSS variables and natively supports standard `.dark` and `.light` theme classes, syncing perfectly with `next-themes`.
 - **Slash Menu (`/`) Component Picker**: Type `/` to bring up a Notion-style block menu.
 - **Floating Toolbar**: Select any text to instantly see a floating toolbar with quick formatting options (Bold, Italic, Link, Case formatting, Subscript, etc).
+- **Zero-Config JSON Compression**: Automatically strips Lexical defaults (like `version`, `direction`, `detail`) natively in the background, slashing the JSON payload size for ultra-lightweight database storage.
 - **Backend-Safe Serializers**: Includes SSR/backend-friendly HTML to Lexical JSON (`htmlToLexicalJSON`) and JSON to HTML (`lexicalJSONToHTML`) serializers.
 - **Feature-Rich Editing**:
   - Headings & Block types (H1-H6, Quote, Code, Lists)

@@ -25,7 +25,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **Local Package Linking**: This Next.js app links directly to the local `@rishiap/lexiform` workspace package (see `package.json`).
 - **Dynamic Importing**: Because Lexical requires the DOM, the editor is dynamically imported without Server-Side Rendering (SSR) in `app/page.tsx` using `next/dynamic`.
 - **Theme Toggling**: The demo demonstrates Lexiform's native `.dark` and `.light` class support by directly toggling these classes on the HTML `document.documentElement`.
-- **JSON Serialization**: Below the editor, there is a live preview window showing the `onChange` value parsed back into formatted Lexical JSON state.
+- **JSON Serialization & Native Compression**: Below the editor, there is a live preview window showing the `onChange` value. Notice how the JSON is natively compressed, automatically stripping out empty defaults like `detail` and `version`!
 
 ## Modifying the Demo
 
