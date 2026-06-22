@@ -49,3 +49,75 @@ export function htmlToLexicalJSON(htmlString: string): string {
 
   return JSON.stringify(editor.getEditorState().toJSON());
 }
+
+/**
+ * Recursively compresses a Lexical JSON object by stripping out default,
+ * empty, or redundant fields (like version, empty formats, direction="ltr", etc.)
+ * to drastically reduce the payload size for database storage.
+ */
+export function compressLexicalJSON(node: any): any {
+  if (Array.isArray(node)) {
+    return node.map(compressLexicalJSON);
+  }
+  if (node !== null && typeof node === 'object') {
+    const compressed: any = {};
+    for (const [key, value] of Object.entries(node)) {
+      // Strip out Lexical defaults to make them vanish from the output JSON
+      if (key === 'version') continue;
+      if (key === 'direction' && (value === null || value === 'ltr')) continue;
+      if (key === 'format' && (value === '' || value === 0)) continue;
+      if (key === 'indent' && value === 0) continue;
+      if (key === 'detail' && value === 0) continue;
+      if (key === 'mode' && value === 'normal') continue;
+      if (key === 'style' && value === '') continue;
+      
+      // Recursively compress children
+      if (key === 'children' && Array.isArray(value)) {
+        compressed[key] = value.map(compressLexicalJSON);
+        continue;
+      }
+      
+      compressed[key] = compressLexicalJSON(value);
+    }
+    return compressed;
+  }
+  return node;
+}
+
+/**
+ * Recursively decompresses a Lexical JSON object back to its fully explicit form,
+ * restoring the default fields that Lexical expects before parsing.
+ */
+export function decompressLexicalJSON(node: any): any {
+  if (Array.isArray(node)) {
+    return node.map(decompressLexicalJSON);
+  }
+  if (node !== null && typeof node === 'object') {
+    const decompressed: any = { ...node };
+    
+    // Always restore version to 1 as Lexical requires it
+    if (!('version' in decompressed)) {
+      decompressed.version = 1;
+    }
+
+    const type = decompressed.type;
+
+    if (type === 'text') {
+      if (!('format' in decompressed)) decompressed.format = 0;
+      if (!('detail' in decompressed)) decompressed.detail = 0;
+      if (!('mode' in decompressed)) decompressed.mode = 'normal';
+      if (!('style' in decompressed)) decompressed.style = '';
+    } else if (type === 'paragraph' || type === 'heading' || type === 'list' || type === 'listitem' || type === 'quote' || type === 'root') {
+      if (!('direction' in decompressed)) decompressed.direction = 'ltr';
+      if (!('format' in decompressed)) decompressed.format = '';
+      if (!('indent' in decompressed)) decompressed.indent = 0;
+    }
+
+    if ('children' in decompressed && Array.isArray(decompressed.children)) {
+      decompressed.children = decompressed.children.map(decompressLexicalJSON);
+    }
+
+    return decompressed;
+  }
+  return node;
+}

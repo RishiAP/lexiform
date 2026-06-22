@@ -3,6 +3,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import { EditorOutputFormat } from '../../types';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { $getRoot, $insertNodes } from 'lexical';
+import { compressLexicalJSON, decompressLexicalJSON } from '../../utils/serializers';
 
 interface ControlledValuePluginProps {
   value?: string;
@@ -19,7 +20,8 @@ export function ControlledValuePlugin({ value, format = 'json' }: ControlledValu
     let currentContent = '';
     editor.getEditorState().read(() => {
       if (format === 'json') {
-        currentContent = JSON.stringify(editor.getEditorState().toJSON());
+        const rawJson = editor.getEditorState().toJSON();
+        currentContent = JSON.stringify(compressLexicalJSON(rawJson));
       } else {
         currentContent = $generateHtmlFromNodes(editor, null);
       }
@@ -32,7 +34,9 @@ export function ControlledValuePlugin({ value, format = 'json' }: ControlledValu
     
     if (format === 'json') {
       try {
-        const parsedState = editor.parseEditorState(value);
+        const rawObj = JSON.parse(value);
+        const decompressedObj = decompressLexicalJSON(rawObj);
+        const parsedState = editor.parseEditorState(decompressedObj);
         editor.setEditorState(parsedState);
       } catch (e) {
         console.error('Lexiform: Failed to parse JSON value', e);

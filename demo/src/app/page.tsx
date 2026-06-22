@@ -12,7 +12,7 @@ const LexicalEditor = dynamic(
 );
 
 export default function Home() {
-  const [content, setContent] = useState<string>(`{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Welcome to Lexiform!","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"heading","version":1,"tag":"h1"},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Type '/' to open the component picker and insert equations, polls, tables, and more!","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`);
+  const [content, setContent] = useState<string>(`{"root":{"children":[{"children":[{"text":"Welcome to Lexiform!","type":"text"}],"type":"heading","tag":"h1"},{"children":[{"text":"Type '/' to open the component picker and insert equations, polls, tables, and more!","type":"text"}],"type":"paragraph"}],"type":"root"}}`);
   const [isDark, setIsDark] = useState(false);
   
   useEffect(() => {

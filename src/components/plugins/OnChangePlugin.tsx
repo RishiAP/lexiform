@@ -2,6 +2,7 @@ import {useEffect, useRef} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import { EditorOutputFormat } from '../../types';
 import { $generateHtmlFromNodes } from '@lexical/html';
+import { compressLexicalJSON } from '../../utils/serializers';
 
 interface OnChangePluginProps {
   onChange?: (val: string, format: EditorOutputFormat) => void;
@@ -25,8 +26,9 @@ export function OnChangePlugin({ onChange, outputFormat = 'json' }: OnChangePlug
       timeoutRef.current = window.setTimeout(() => {
         if (outputFormat === 'json') {
           editor.getEditorState().read(() => {
-            const json = JSON.stringify(editor.getEditorState().toJSON());
-            onChange(json, 'json');
+            const rawJson = editor.getEditorState().toJSON();
+            const compressed = compressLexicalJSON(rawJson);
+            onChange(JSON.stringify(compressed), 'json');
           });
         } else {
           editor.getEditorState().read(() => {
