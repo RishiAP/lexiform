@@ -1,6 +1,6 @@
 {
   "name": "@rishiap/lexiform",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <your-email>",
   "license": "MIT",

@@ -1,7 +1,8 @@
 # @rishiap/lexiform
 
-Lexiform is a highly polished, lightweight, headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`) and styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
+[![NPM Version](https://img.shields.io/npm/v/@rishiap/lexiform)](https://www.npmjs.com/package/@rishiap/lexiform)
 
+Lexiform is a highly polished, lightweight, headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`) and styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
 It abstracts away the complexity of Lexical's architecture and provides a stunning, modern, single `<LexicalEditor>` component for quick integration into Next.js, Vite, and other React apps.
 
 ## Features
