@@ -1,5 +1,5 @@
 {
-  "name": "lexical-playground",
+  "name": "@rishiap/lexiform",
   "version": "0.30.0",
   "private": true,
   "type": "module",
@@ -55,5 +55,9 @@
     "rollup-plugin-copy": "^3.5.0",
     "typescript": "^5.8.3"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RishiAP/lexiform"
+  }
 }
