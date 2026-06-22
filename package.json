@@ -1,0 +1,51 @@
+{
+  "name": "@rishiap/lexiform",
+  "version": "0.1.0",
+  "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
+  "author": "Rishi AP <your-email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RishiAP/lexiform"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/styles.css"
+  },
+  "files": ["dist", "README.md"],
+  "sideEffects": ["**/*.css"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "lexical": "^0.30.0",
+    "@lexical/react": "^0.30.0",
+    "@lexical/rich-text": "^0.30.0",
+    "@lexical/list": "^0.30.0",
+    "@lexical/link": "^0.30.0",
+    "@lexical/code": "^0.30.0",
+    "@lexical/history": "^0.30.0",
+    "@lexical/selection": "^0.30.0",
+    "@lexical/utils": "^0.30.0",
+    "@lexical/markdown": "^0.30.0"
+  },
+  "devDependencies": {
+    "tsup": "^6.0.0",
+    "typescript": "^5.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
+  }
+}
