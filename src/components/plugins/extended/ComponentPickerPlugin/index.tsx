@@ -41,7 +41,7 @@ import * as ReactDOM from 'react-dom';
 import useModal from '../../../../legacy/hooks/useModal';
 import catTypingGif from '../../../../legacy/images/cat-typing.gif';
 import { Type, Heading1, Heading2, Heading3, List, ListOrdered, CheckSquare, Quote, Code, Minus, Scissors, PenTool, BarChart2, Calculator, Image as ImageIcon, Columns, AlignLeft, AlignCenter, AlignRight, AlignJustify, Table as TableIcon, ChevronsUpDown, MonitorPlay, MessageCircle, LayoutTemplate } from 'lucide-react';
-import {FaYoutube, FaXTwitter, FaFigma} from 'react-icons/fa6';
+import { YouTubeIcon, TwitterIcon, FigmaIcon } from '../../../../icons/EmbedIcons';
 import {EmbedConfigs} from '../AutoEmbedPlugin';
 import {INSERT_COLLAPSIBLE_COMMAND} from '../CollapsiblePlugin';
 import {InsertEquationDialog} from '../EquationsPlugin';
@@ -279,7 +279,7 @@ function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
         )),
     }),
     new ComponentPickerOption('YouTube Video', {
-      icon: <FaYoutube size={16} />,
+      icon: <YouTubeIcon size={16} />,
       keywords: ['youtube', 'video', 'embed'],
       onSelect: () =>
         showModal('Insert YouTube Video', (onClose) => (
@@ -287,7 +287,7 @@ function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
         )),
     }),
     new ComponentPickerOption('Tweet', {
-      icon: <FaXTwitter size={16} />,
+      icon: <TwitterIcon size={16} />,
       keywords: ['tweet', 'twitter', 'x', 'embed'],
       onSelect: () =>
         showModal('Insert Tweet', (onClose) => (
@@ -295,7 +295,7 @@ function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
         )),
     }),
     new ComponentPickerOption('Figma Document', {
-      icon: <FaFigma size={16} />,
+      icon: <FigmaIcon size={16} />,
       keywords: ['figma', 'design', 'embed'],
       onSelect: () =>
         showModal('Insert Figma Document', (onClose) => (

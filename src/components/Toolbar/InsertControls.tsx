@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {LexicalEditor} from 'lexical';
 import {Plus, Minus, Link, Image as ImageIcon, Table as TableIcon, BarChart2, PenTool, Calculator, Columns, ChevronsUpDown, Scissors} from 'lucide-react';
-import {FaYoutube, FaXTwitter, FaFigma} from 'react-icons/fa6';
+import { YouTubeIcon, TwitterIcon, FigmaIcon } from '../../icons/EmbedIcons';
 import {INSERT_HORIZONTAL_RULE_COMMAND} from '@lexical/react/LexicalHorizontalRuleNode';
 
 import {DropdownMenu, DropdownMenuItem} from '../../ui/DropdownMenu';
@@ -128,7 +128,7 @@ export function InsertControls({
             ));
           }}
         >
-          <span className="Lexiform__dropdownIcon"><FaYoutube size={16} /></span>
+          <span className="Lexiform__dropdownIcon"><YouTubeIcon size={16} /></span>
           <span className="Lexiform__dropdownText">YouTube Video</span>
         </DropdownMenuItem>
 
@@ -139,7 +139,7 @@ export function InsertControls({
             ));
           }}
         >
-          <span className="Lexiform__dropdownIcon"><FaXTwitter size={16} /></span>
+          <span className="Lexiform__dropdownIcon"><TwitterIcon size={16} /></span>
           <span className="Lexiform__dropdownText">Tweet</span>
         </DropdownMenuItem>
 
@@ -150,7 +150,7 @@ export function InsertControls({
             ));
           }}
         >
-          <span className="Lexiform__dropdownIcon"><FaFigma size={16} /></span>
+          <span className="Lexiform__dropdownIcon"><FigmaIcon size={16} /></span>
           <span className="Lexiform__dropdownText">Figma Document</span>
         </DropdownMenuItem>
 
