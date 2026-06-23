@@ -32,3 +32,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the demo page by modifying `src/app/page.tsx`. The page will auto-update as you edit the file.
 
 > **Note**: If you make changes to the actual Lexiform package source code (in `../src`), you must rebuild the package (`npm run build` in the root) and then restart the Next.js dev server for Webpack/Turbopack to pick up the updated local module.
+
+## Deployment to Vercel
+
+You can easily deploy this demo folder directly to Vercel for free hosting.
+
+1. **Import your GitHub repo** into your Vercel Dashboard.
+2. In the **Build and Output Settings**, configure:
+   - **Framework Preset**: Next.js
+   - **Root Directory**: `demo`
+   - **Install Command Override**: `npm install --include=dev`
+   - **Build Command Override**: `cd .. && npm install --include=dev && npm run build && cd demo && npm run build`
+3. Click **Deploy**.
+
+*Why this build command?* Because the demo relies on the local `@rishiap/lexiform` package, Vercel must first step back into the root folder to build the `tsup` package before Next.js can compile.

@@ -36,9 +36,16 @@ export default function Home() {
           {isDark ? <Moon size={20} /> : <Sun size={20} />}
         </button>
 
-        <header className="text-center">
+        <header className="text-center mb-4">
           <h1 className="text-4xl font-bold mb-4">Lexiform Demo</h1>
-          <p className={isDark ? "text-gray-400" : "text-gray-600"}>A beautiful, lightweight Lexical-based editor</p>
+          <p className={`${isDark ? "text-gray-400" : "text-gray-600"} mb-6`}>A beautiful, lightweight Lexical-based editor</p>
+          <div className={`inline-flex items-center px-4 py-2 rounded-full border ${isDark ? 'border-gray-800 bg-gray-900/50 text-gray-300' : 'border-gray-200 bg-white shadow-sm text-gray-600'} text-sm`}>
+            <span>Made with <span className="text-red-500">❤️</span> by <a href="https://github.com/RishiAP" target="_blank" rel="noopener noreferrer" className={`font-semibold hover:underline ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>RishiAP</a></span>
+            <span className="mx-3 opacity-30">|</span>
+            <a href="https://github.com/RishiAP/lexiform" target="_blank" rel="noopener noreferrer" className={`hover:underline font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+              ★ Star on GitHub
+            </a>
+          </div>
         </header>
 
         <div className={`${isDark ? 'bg-[#09090b] border-gray-800' : 'bg-white border-gray-200'} rounded-xl shadow-sm border overflow-hidden p-6 transition-colors duration-200`}>
@@ -78,6 +85,8 @@ export default function Home() {
             })()
           }</pre>
         </div>
+
+
       </main>
     </div>
   );

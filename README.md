@@ -1,12 +1,15 @@
 # @rishiap/lexiform
 
 [![NPM Version](https://img.shields.io/npm/v/@rishiap/lexiform)](https://www.npmjs.com/package/@rishiap/lexiform)
+[![Made by RishiAP](https://img.shields.io/badge/Made%20by-RishiAP-blue?style=flat-square&logo=github)](https://github.com/RishiAP)
 
-Lexiform is a highly polished, lightweight, headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`) and styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
+Lexiform is a highly polished, ultra-lightweight (under 200KB), headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`). Styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
+
 It abstracts away the complexity of Lexical's architecture and provides a stunning, modern, single `<LexicalEditor>` component for quick integration into Next.js, Vite, and other React apps.
 
 ## Features
 
+- **Ultra Lightweight**: Fully featured editor bundle that stays under 200KB by utilizing smart code-splitting (e.g. dynamically lazy-loading a 350KB emoji list).
 - **Drop-in `<LexicalEditor />` Component**: Start using a rich text editor instantly.
 - **Beautiful UI**: Polished toolbar with vanilla CSS combined with robust Radix UI primitives.
 - **Native Shadcn & Tailwind Compatibility**: Inherits global CSS variables and natively supports standard `.dark` and `.light` theme classes, syncing perfectly with `next-themes`.
@@ -27,6 +30,8 @@ It abstracts away the complexity of Lexical's architecture and provides a stunni
   - Polls
   - Layout / Columns
   - Embeds: YouTube, X (Twitter), Figma
+  - Categorized Emoji Picker with search & `:` real-time typeahead dropdown
+  - Classic Emoticon support `:)`, `:D`
   - Collapsible sections
 - **Controlled Component**: Pass `value` and `onChange` seamlessly like a standard HTML input.
 - **ESM & Headless Support**: Modern build system using `tsup`, ensuring compatibility across various React environments.
@@ -129,6 +134,12 @@ Lexiform is built using `tsup`.
 1. Install dependencies: `npm install`
 2. Build the package: `npm run build`
 3. Link and test locally in the `demo/` folder: `cd demo && npm run dev`
+
+## Author
+
+**RishiAP**
+- [GitHub: @RishiAP](https://github.com/RishiAP)
+- [NPM: @rishiap](https://www.npmjs.com/~rishiap)
 
 ## License
 MIT
