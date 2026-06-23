@@ -50,8 +50,6 @@ import {
 } from '../../../../nodes/extended/EquationNode';
 import {$createImageNode, $isImageNode, ImageNode} from '../../../../nodes/extended/ImageNode';
 import {$createTweetNode, $isTweetNode, TweetNode} from '../../../../nodes/extended/TweetNode';
-import emojiList from '../../../../legacy/utils/emoji-list';
-
 export const HR: ElementTransformer = {
   dependencies: [HorizontalRuleNode],
   export: (node: LexicalNode) => {
@@ -97,20 +95,33 @@ export const IMAGE: TextMatchTransformer = {
   type: 'text-match',
 };
 
-export const EMOJI: TextMatchTransformer = {
-  dependencies: [],
-  export: () => null,
-  importRegExp: /:([a-z0-9_]+):/,
-  regExp: /:([a-z0-9_]+):$/,
-  replace: (textNode, [, name]) => {
-    const emoji = emojiList.find((e) => e.aliases.includes(name))?.emoji;
-    if (emoji) {
+function createEmoticonTransformer(emoticon: string, emoji: string): TextMatchTransformer {
+  const trigger = emoticon[emoticon.length - 1];
+  const escapedEmoticon = emoticon.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regExp = new RegExp(`(${escapedEmoticon})$`);
+  return {
+    dependencies: [],
+    export: () => null,
+    importRegExp: new RegExp(`(${escapedEmoticon})`),
+    regExp,
+    replace: (textNode) => {
       textNode.replace($createTextNode(emoji));
-    }
-  },
-  trigger: ':',
-  type: 'text-match',
-};
+    },
+    trigger,
+    type: 'text-match',
+  };
+}
+
+export const EMOTICONS: Array<TextMatchTransformer> = [
+  createEmoticonTransformer(':)', '🙂'),
+  createEmoticonTransformer(':(', '🙁'),
+  createEmoticonTransformer(':D', '😀'),
+  createEmoticonTransformer(':\'(', '😢'),
+  createEmoticonTransformer(':P', '😛'),
+  createEmoticonTransformer(':O', '😮'),
+  createEmoticonTransformer(':/', '😕'),
+  createEmoticonTransformer('<3', '❤️'),
+];
 
 export const EQUATION: TextMatchTransformer = {
   dependencies: [EquationNode],
@@ -313,7 +324,7 @@ export const PLAYGROUND_TRANSFORMERS: Array<Transformer> = [
   TABLE,
   HR,
   IMAGE,
-  EMOJI,
+  ...EMOTICONS,
   EQUATION,
   TWEET,
   CHECK_LIST,

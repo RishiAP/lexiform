@@ -54,9 +54,9 @@ function EmojiMenuItem({
   onMouseEnter: () => void;
   option: EmojiOption;
 }) {
-  let className = 'item';
+  let className = 'Lexiform__dropdownItem';
   if (isSelected) {
-    className += ' selected';
+    className += ' active';
   }
   return (
     <li
@@ -68,9 +68,18 @@ function EmojiMenuItem({
       aria-selected={isSelected}
       id={'typeahead-item-' + index}
       onMouseEnter={onMouseEnter}
-      onClick={onClick}>
-      <span className="text">
-        {option.emoji} {option.title}
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px 12px',
+        margin: '2px 0',
+      }}>
+      <span style={{ fontSize: '18px', marginRight: '8px' }}>
+        {option.emoji}
+      </span>
+      <span style={{ textTransform: 'capitalize' }}>
+        {option.title.replace(/_/g, ' ')}
       </span>
     </li>
   );
@@ -95,7 +104,7 @@ export default function EmojiPickerPlugin() {
   const [emojis, setEmojis] = useState<Array<Emoji>>([]);
 
   useEffect(() => {
-    import('../../utils/emoji-list').then((file) => setEmojis(file.default));
+    import('../../../../legacy/utils/emoji-list').then((file) => setEmojis(file.default));
   }, []);
 
   const emojiOptions = useMemo(
@@ -171,8 +180,14 @@ export default function EmojiPickerPlugin() {
 
         return anchorElementRef.current && options.length
           ? ReactDOM.createPortal(
-              <div className="typeahead-popover emoji-menu">
-                <ul>
+              <div className="typeahead-popover emoji-menu" style={{
+                maxHeight: '300px',
+                overflowY: 'auto',
+                listStyle: 'none',
+                margin: 0,
+                padding: '4px'
+              }}>
+                <ul style={{ padding: 0, margin: 0, listStyle: 'none' }}>
                   {options.map((option: EmojiOption, index) => (
                     <EmojiMenuItem
                       key={option.key}

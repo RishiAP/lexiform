@@ -23,6 +23,7 @@ import {ControlledValuePlugin} from './plugins/ControlledValuePlugin';
 import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
 import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
 import {CodeHighlightPlugin} from './plugins/CodeHighlightPlugin';
+import EmojiPickerPlugin from './plugins/extended/EmojiPickerPlugin';
 import {LexicalContentEditable} from '../ui/ContentEditable';
 import {editorNodes} from '../nodes/EditorNodes';
 import theme from '../themes/DefaultTheme';
@@ -100,6 +101,7 @@ export function LexicalEditor({
               <CodeHighlightPlugin />
               <FloatingLinkEditorPluginWrapper />
               <FloatingTextFormatToolbarPluginWrapper />
+              <EmojiPickerPlugin />
               {plugins}
 
               {value !== undefined && (

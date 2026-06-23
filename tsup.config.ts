@@ -7,7 +7,7 @@ export default defineConfig({
   dts: true,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react-dom'],
+  skipNodeModulesBundle: true,
   // Keep CSS imports as side effects — consumers import styles manually
   esbuildOptions(options) {
     // keep default options

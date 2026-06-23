@@ -52,7 +52,8 @@ import {
   Undo,
   Redo,
   Link,
-  CodeXml
+  CodeXml,
+  Smile
 } from 'lucide-react';
 
 import {
@@ -69,6 +70,8 @@ import {InsertControls} from './InsertControls';
 import {TextFormatDropdown} from './TextFormatDropdown';
 import {ColorPicker} from '../../ui/ColorPicker';
 import {DropdownMenu, DropdownMenuItem} from '../../ui/DropdownMenu';
+import useModal from '../../legacy/hooks/useModal';
+import {InsertEmojiDialog} from '../plugins/extended/EmojiPickerPlugin/InsertEmojiDialog';
 
 function getCodeLanguageOptions(): [string, string][] {
   const options: [string, string][] = [];
@@ -102,6 +105,7 @@ export function ToolbarPlugin({
   );
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
   const {toolbarState, updateToolbarState} = useToolbarState();
+  const [modal, showModal] = useModal();
 
   const $updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -503,7 +507,19 @@ export function ToolbarPlugin({
             isSubscript={toolbarState.isSubscript}
             isSuperscript={toolbarState.isSuperscript}
           />
-          
+          <Divider />
+          <DropdownMenu
+            disabled={!isEditable}
+            buttonIcon={<Smile size={16} />}
+            buttonClassName="Lexiform__toolbarButton"
+            title="Insert Emoji"
+          >
+            <div style={{ width: '320px', padding: '8px' }}>
+              <InsertEmojiDialog activeEditor={activeEditor} onClose={() => {
+                document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+              }} />
+            </div>
+          </DropdownMenu>
           <Divider />
           <InsertControls 
             disabled={!isEditable}
@@ -518,6 +534,7 @@ export function ToolbarPlugin({
         editor={activeEditor}
         isRTL={toolbarState.isRTL}
       />
+      {modal}
     </div>
   );
 }
