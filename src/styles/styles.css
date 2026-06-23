@@ -21,6 +21,17 @@
   --lexiform-input: #e4e4e7;
   --lexiform-ring: #18181b;
   --lexiform-radius: 0.5rem;
+
+  --lexiform-code-bg: #f4f4f5;
+  --lexiform-code-border: #e4e4e7;
+  --lexiform-token-comment: slategray;
+  --lexiform-token-punctuation: #999;
+  --lexiform-token-property: #905;
+  --lexiform-token-selector: #690;
+  --lexiform-token-operator: #9a6e3a;
+  --lexiform-token-attr: #07a;
+  --lexiform-token-variable: #e90;
+  --lexiform-token-function: #dd4a68;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,6 +55,17 @@
     --lexiform-border: #27272a;
     --lexiform-input: #27272a;
     --lexiform-ring: #d4d4d8;
+
+    --lexiform-code-bg: #27272a;
+    --lexiform-code-border: #3f3f46;
+    --lexiform-token-comment: #6b7280;
+    --lexiform-token-punctuation: #9ca3af;
+    --lexiform-token-property: #f87171;
+    --lexiform-token-selector: #a3e635;
+    --lexiform-token-operator: #fbbf24;
+    --lexiform-token-attr: #60a5fa;
+    --lexiform-token-variable: #fb923c;
+    --lexiform-token-function: #f472b6;
   }
 }
 
@@ -67,6 +89,17 @@
   --lexiform-border: #27272a;
   --lexiform-input: #27272a;
   --lexiform-ring: #d4d4d8;
+
+  --lexiform-code-bg: #27272a;
+  --lexiform-code-border: #3f3f46;
+  --lexiform-token-comment: #6b7280;
+  --lexiform-token-punctuation: #9ca3af;
+  --lexiform-token-property: #f87171;
+  --lexiform-token-selector: #a3e635;
+  --lexiform-token-operator: #fbbf24;
+  --lexiform-token-attr: #60a5fa;
+  --lexiform-token-variable: #fb923c;
+  --lexiform-token-function: #f472b6;
 }
 
 /* Lexiform Editor Container Styles */

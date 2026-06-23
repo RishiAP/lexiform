@@ -115,7 +115,7 @@
   vertical-align: super;
 }
 .LexiformTheme__textCode {
-  background-color: rgb(240, 242, 245);
+  background-color: var(--lexiform-code-bg, rgb(240, 242, 245));
   padding: 1px 0.25rem;
   font-family: Menlo, Consolas, Monaco, monospace;
   font-size: 94%;
@@ -161,7 +161,7 @@
   }
 }
 .LexiformTheme__code {
-  background-color: rgb(240, 242, 245);
+  background-color: var(--lexiform-code-bg, rgb(240, 242, 245));
   font-family: Menlo, Consolas, Monaco, monospace;
   display: block;
   padding: 8px 8px 8px 52px;
@@ -177,12 +177,12 @@
 .LexiformTheme__code:before {
   content: attr(data-gutter);
   position: absolute;
-  background-color: #eee;
+  background-color: var(--lexiform-code-border, #eee);
   left: 0;
   top: 0;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--lexiform-border, #ccc);
   padding: 8px;
-  color: #777;
+  color: var(--lexiform-muted-foreground, #777);
   white-space: pre-wrap;
   text-align: right;
   min-width: 25px;
@@ -302,28 +302,28 @@
   display: none;
 }
 .LexiformTheme__tokenComment {
-  color: slategray;
+  color: var(--lexiform-token-comment, slategray);
 }
 .LexiformTheme__tokenPunctuation {
-  color: #999;
+  color: var(--lexiform-token-punctuation, #999);
 }
 .LexiformTheme__tokenProperty {
-  color: #905;
+  color: var(--lexiform-token-property, #905);
 }
 .LexiformTheme__tokenSelector {
-  color: #690;
+  color: var(--lexiform-token-selector, #690);
 }
 .LexiformTheme__tokenOperator {
-  color: #9a6e3a;
+  color: var(--lexiform-token-operator, #9a6e3a);
 }
 .LexiformTheme__tokenAttr {
-  color: #07a;
+  color: var(--lexiform-token-attr, #07a);
 }
 .LexiformTheme__tokenVariable {
-  color: #e90;
+  color: var(--lexiform-token-variable, #e90);
 }
 .LexiformTheme__tokenFunction {
-  color: #dd4a68;
+  color: var(--lexiform-token-function, #dd4a68);
 }
 .LexiformTheme__mark {
   background: rgba(255, 212, 0, 0.14);
