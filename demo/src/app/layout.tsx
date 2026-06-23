@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: "Lexiform | Modern React Rich Text Editor",
   description: "A highly polished, ultra-lightweight, headless-compatible drop-in React rich text editor built on Lexical. Made by RishiAP.",
   openGraph: {
@@ -21,11 +22,20 @@ export const metadata: Metadata = {
     url: "https://github.com/RishiAP/lexiform",
     siteName: "Lexiform Demo",
     type: "website",
+    images: [
+      {
+        url: "/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Lexiform Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Lexiform | Modern React Rich Text Editor",
     description: "A highly polished, ultra-lightweight drop-in React rich text editor built on Lexical.",
+    images: ["/android-chrome-512x512.png"],
   },
 };
 
