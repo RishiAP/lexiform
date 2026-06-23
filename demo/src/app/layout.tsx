@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/lexiform-banner.svg",
+        url: "/lexiform-banner.png",
         width: 1200,
         height: 630,
         alt: "Lexiform Banner",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Lexiform | Modern React Rich Text Editor",
     description: "A highly polished, ultra-lightweight drop-in React rich text editor built on Lexical.",
-    images: ["/lexiform-banner.svg"],
+    images: ["/lexiform-banner.png"],
   },
 };
 
