@@ -16,6 +16,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: "Lexiform | Modern React Rich Text Editor",
   description: "A highly polished, ultra-lightweight, headless-compatible drop-in React rich text editor built on Lexical. Made by RishiAP.",
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/lexiform-icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Lexiform | Modern React Rich Text Editor",
     description: "A highly polished, ultra-lightweight drop-in React rich text editor built on Lexical.",
@@ -24,10 +34,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "Lexiform Logo",
+        url: "/lexiform-banner.svg",
+        width: 1200,
+        height: 630,
+        alt: "Lexiform Banner",
       },
     ],
   },
@@ -35,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Lexiform | Modern React Rich Text Editor",
     description: "A highly polished, ultra-lightweight drop-in React rich text editor built on Lexical.",
-    images: ["/android-chrome-512x512.png"],
+    images: ["/lexiform-banner.svg"],
   },
 };
 
