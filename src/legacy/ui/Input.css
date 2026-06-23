@@ -16,17 +16,30 @@
 .Input__label {
   display: flex;
   flex: 1;
-  color: #666;
+  color: var(--lexiform-foreground, #09090b);
 }
 .Input__input {
   display: flex;
   flex: 2;
-  border: 1px solid #999;
+  border: 1px solid var(--lexiform-border, #e4e4e7);
+  background-color: var(--lexiform-background, #ffffff);
+  color: var(--lexiform-foreground, #09090b);
   padding-top: 7px;
   padding-bottom: 7px;
   padding-left: 10px;
   padding-right: 10px;
-  font-size: 16px;
-  border-radius: 5px;
+  border-radius: var(--lexiform-radius, 5px);
   min-width: 0;
+  outline: none;
+}
+.Input__input:focus {
+  border-color: var(--lexiform-ring, #18181b);
+  box-shadow: 0 0 0 1px var(--lexiform-ring, #18181b);
+}
+.Input__input--error {
+  border-color: var(--lexiform-destructive, #ef4444);
+}
+.Input__input--error:focus {
+  border-color: var(--lexiform-destructive, #ef4444);
+  box-shadow: 0 0 0 1px var(--lexiform-destructive, #ef4444);
 }

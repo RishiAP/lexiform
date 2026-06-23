@@ -24,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - **Local Package Linking**: This Next.js app links directly to the local `@rishiap/lexiform` workspace package (see `package.json`).
 - **Dynamic Importing**: Because Lexical requires the DOM, the editor is dynamically imported without Server-Side Rendering (SSR) in `app/page.tsx` using `next/dynamic`.
-- **Theme Toggling**: The demo demonstrates Lexiform's native `.dark` and `.light` class support by directly toggling these classes on the HTML `document.documentElement`.
+- **Theme Toggling**: The demo demonstrates Lexiform's native `.dark` class support, wired up with `next-themes` and Tailwind CSS v4. It also showcases **two-way Excalidraw theme sync**: toggling dark mode inside the Excalidraw whiteboard will magically toggle the entire website's theme!
 - **JSON Serialization & Native Compression**: Below the editor, there is a live preview window showing the `onChange` value. Notice how the JSON is natively compressed, automatically stripping out empty defaults like `detail` and `version`!
 - **Multiple Output Formats**: Test how Lexiform seamlessly emits highly optimized JSON, raw HTML, or clean Markdown.
 - **Smart CSS Chunking**: Check `src/app/page.tsx` to see how you can optionally import just the CSS you need for complex plugins (e.g., Excalidraw, KaTeX) instead of a monolithic stylesheet.

@@ -19,7 +19,8 @@
   flex-grow: 0px;
   flex-shrink: 1px;
   z-index: 100;
-  background-color: rgba(40, 40, 40, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
 }
 .ExcalidrawModal__actions {
   text-align: end;
@@ -27,22 +28,36 @@
   right: 5px;
   top: 5px;
   z-index: 1;
+  display: flex;
+  gap: 6px;
 }
-.ExcalidrawModal__actions button {
-  background-color: #fff;
-  border-radius: 5px;
+.ExcalidrawModal__actions button,
+.ExcalidrawModal__actions .action-button {
+  background-color: var(--lexiform-background, #fff);
+  color: var(--lexiform-foreground, #000);
+  border-radius: var(--lexiform-radius, 5px);
+  border: 1px solid var(--lexiform-border, #e4e4e7);
+  cursor: pointer;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+.ExcalidrawModal__actions button:hover,
+.ExcalidrawModal__actions .action-button:hover {
+  background-color: var(--lexiform-accent, #f4f4f5);
 }
 .ExcalidrawModal__row {
   position: relative;
   padding: 40px 5px 5px;
   width: 70vw;
   height: 70vh;
-  border-radius: 8px;
+  border-radius: var(--lexiform-radius, 8px);
   box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 .ExcalidrawModal__row > div {
-  border-radius: 5px;
+  border-radius: calc(var(--lexiform-radius, 8px) - 2px);
 }
 .ExcalidrawModal__modal {
   position: relative;
@@ -53,10 +68,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
-  background-color: #eee;
+  border-radius: var(--lexiform-radius, 8px);
+  background-color: var(--lexiform-background, #fff);
+  color: var(--lexiform-foreground, #000);
+  border: 1px solid var(--lexiform-border, transparent);
 }
 .ExcalidrawModal__discardModal {
-  margin-top: 60px;
-  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
 }

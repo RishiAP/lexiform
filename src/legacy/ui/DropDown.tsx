@@ -153,6 +153,7 @@ export default function DropDown({
   buttonIconClassName,
   children,
   stopCloseOnClickSelf,
+  position = 'bottom',
 }: {
   disabled?: boolean;
   buttonAriaLabel?: string;
@@ -161,6 +162,7 @@ export default function DropDown({
   buttonLabel?: string;
   children: ReactNode;
   stopCloseOnClickSelf?: boolean;
+  position?: 'bottom' | 'right';
 }): JSX.Element {
   const dropDownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -178,14 +180,26 @@ export default function DropDown({
     const dropDown = dropDownRef.current;
 
     if (showDropDown && button !== null && dropDown !== null) {
-      const {top, left} = button.getBoundingClientRect();
-      dropDown.style.top = `${top + button.offsetHeight + dropDownPadding}px`;
-      dropDown.style.left = `${Math.min(
-        left,
-        window.innerWidth - dropDown.offsetWidth - 20,
-      )}px`;
+      const {top, left, right} = button.getBoundingClientRect();
+      
+      if (position === 'right') {
+        dropDown.style.top = `${top}px`;
+        const nextLeft = right + dropDownPadding;
+        // If it overflows right edge, try putting it on the left side of the menu
+        if (nextLeft + dropDown.offsetWidth > window.innerWidth) {
+           dropDown.style.left = `${Math.max(0, left - dropDown.offsetWidth - dropDownPadding)}px`;
+        } else {
+           dropDown.style.left = `${nextLeft}px`;
+        }
+      } else {
+        dropDown.style.top = `${top + button.offsetHeight + dropDownPadding}px`;
+        dropDown.style.left = `${Math.min(
+          left,
+          window.innerWidth - dropDown.offsetWidth - 20,
+        )}px`;
+      }
     }
-  }, [dropDownRef, buttonRef, showDropDown]);
+  }, [dropDownRef, buttonRef, showDropDown, position]);
 
   useEffect(() => {
     const button = buttonRef.current;

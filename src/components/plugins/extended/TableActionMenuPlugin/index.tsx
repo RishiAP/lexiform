@@ -36,6 +36,7 @@ import {
 } from '@lexical/table';
 import {mergeRegister} from '@lexical/utils';
 import {
+  $getNearestNodeFromDOMNode,
   $getSelection,
   $isElementNode,
   $isRangeSelection,
@@ -89,18 +90,7 @@ function $selectLastDescendant(node: ElementNode): void {
   }
 }
 
-function currentCellBackgroundColor(editor: LexicalEditor): null | string {
-  return editor.getEditorState().read(() => {
-    const selection = $getSelection();
-    if ($isRangeSelection(selection) || $isTableSelection(selection)) {
-      const [cell] = $getNodeTriplet(selection.anchor);
-      if ($isTableCellNode(cell)) {
-        return cell.getBackgroundColor();
-      }
-    }
-    return null;
-  });
-}
+
 
 type TableCellActionMenuProps = Readonly<{
   contextRef: {current: null | HTMLElement};
@@ -132,7 +122,7 @@ function TableActionMenu({
   const [canMergeCells, setCanMergeCells] = useState(false);
   const [canUnmergeCell, setCanUnmergeCell] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(
-    () => currentCellBackgroundColor(editor) || '',
+    () => editor.getEditorState().read(() => _tableCellNode.getBackgroundColor(), {editor}) || '',
   );
 
   useEffect(() => {
@@ -145,8 +135,10 @@ function TableActionMenu({
         if (nodeUpdated) {
           editor.getEditorState().read(() => {
             updateTableCellNode(tableCellNode.getLatest());
-          });
-          setBackgroundColor(currentCellBackgroundColor(editor) || '');
+          }, {editor});
+          setBackgroundColor(
+            editor.getEditorState().read(() => tableCellNode.getBackgroundColor(), {editor}) || ''
+          );
         }
       },
       {skipInitialization: true},
@@ -426,26 +418,21 @@ function TableActionMenu({
     (value: string) => {
       editor.update(() => {
         const selection = $getSelection();
-        if ($isRangeSelection(selection) || $isTableSelection(selection)) {
-          const [cell] = $getNodeTriplet(selection.anchor);
-          if ($isTableCellNode(cell)) {
-            cell.setBackgroundColor(value);
-          }
+        if ($isTableSelection(selection)) {
+          const nodes = selection.getNodes();
 
-          if ($isTableSelection(selection)) {
-            const nodes = selection.getNodes();
-
-            for (let i = 0; i < nodes.length; i++) {
-              const node = nodes[i];
-              if ($isTableCellNode(node)) {
-                node.setBackgroundColor(value);
-              }
+          for (let i = 0; i < nodes.length; i++) {
+            const node = nodes[i];
+            if ($isTableCellNode(node)) {
+              node.setBackgroundColor(value);
             }
           }
+        } else {
+          tableCellNode.setBackgroundColor(value);
         }
       });
     },
-    [editor],
+    [editor, tableCellNode],
   );
 
   const formatVerticalAlign = (value: string) => {
@@ -505,20 +492,19 @@ function TableActionMenu({
         e.stopPropagation();
       }}>
       {mergeCellButton}
-      <button
-        type="button"
-        className="item"
-        onClick={() =>
-          showColorPickerModal('Cell background color', () => (
-            <ColorPicker
-              color={backgroundColor}
-              onChange={handleCellBackgroundColor}
-            />
-          ))
-        }
-        data-test-id="table-background-color">
-        <span className="text">Background color</span>
-      </button>
+      <DropDown
+        buttonClassName="item"
+        buttonLabel="Background color"
+        buttonAriaLabel="Formatting options for cell background color"
+        stopCloseOnClickSelf={true}
+        position="right">
+        <div style={{padding: '8px'}} onClick={(e) => e.stopPropagation()}>
+          <ColorPicker
+            color={backgroundColor}
+            onChange={handleCellBackgroundColor}
+          />
+        </div>
+      </DropDown>
       <button
         type="button"
         className="item"
@@ -689,7 +675,6 @@ function TableCellActionMenuContainer({
   const [editor] = useLexicalComposerContext();
 
   const menuButtonRef = useRef<HTMLDivElement | null>(null);
-  const menuRootRef = useRef<HTMLButtonElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [tableCellNode, setTableMenuCellNode] = useState<TableCellNode | null>(
@@ -698,220 +683,61 @@ function TableCellActionMenuContainer({
 
   const [colorPickerModal, showColorPickerModal] = useModal();
 
-  const checkTableCellOverflow = useCallback(
-    (tableCellParentNodeDOM: HTMLElement): boolean => {
-      const scrollableContainer = tableCellParentNodeDOM.closest(
-        '.PlaygroundEditorTheme__tableScrollableWrapper',
-      );
-      if (scrollableContainer) {
-        const containerRect = (
-          scrollableContainer as HTMLElement
-        ).getBoundingClientRect();
-        const cellRect = tableCellParentNodeDOM.getBoundingClientRect();
-
-        // Calculate where the action button would be positioned (5px from right edge of cell)
-        // Also account for the button width and table cell padding (8px)
-        const actionButtonRight = cellRect.right - 5;
-        const actionButtonLeft = actionButtonRight - 28; // 20px width + 8px padding
-
-        // Only hide if the action button would overflow the container
-        if (
-          actionButtonRight > containerRect.right ||
-          actionButtonLeft < containerRect.left
-        ) {
-          return true;
-        }
-      }
-      return false;
-    },
-    [],
-  );
-
-  const $moveMenu = useCallback(() => {
-    const menu = menuButtonRef.current;
-    const selection = $getSelection();
-    const nativeSelection = getDOMSelection(editor._window);
-    const activeElement = document.activeElement;
-    function disable() {
-      if (menu) {
-        menu.classList.remove('table-cell-action-button-container--active');
-        menu.classList.add('table-cell-action-button-container--inactive');
-      }
-      setTableMenuCellNode(null);
-    }
-
-    if (selection == null || menu == null) {
-      return disable();
-    }
-
+  useEffect(() => {
     const rootElement = editor.getRootElement();
-    let tableObserver: TableObserver | null = null;
-    let tableCellParentNodeDOM: HTMLElement | null = null;
+    if (!rootElement) return;
 
-    if (
-      $isRangeSelection(selection) &&
-      rootElement !== null &&
-      nativeSelection !== null &&
-      rootElement.contains(nativeSelection.anchorNode)
-    ) {
-      const tableCellNodeFromSelection = $getTableCellNodeFromLexicalNode(
-        selection.anchor.getNode(),
-      );
-
-      if (tableCellNodeFromSelection == null) {
-        return disable();
+    const handleContextMenu = (e: MouseEvent) => {
+      const target = e.target;
+      if (!isDOMNode(target)) return;
+      
+      const tableCell = target.closest<HTMLElement>('td, th');
+      if (tableCell) {
+        editor.getEditorState().read(() => {
+          const node = $getNearestNodeFromDOMNode(tableCell);
+          if ($isTableCellNode(node)) {
+            e.preventDefault();
+            setTableMenuCellNode(node);
+            setIsMenuOpen(true);
+            
+            const menu = menuButtonRef.current;
+            if (menu) {
+              const anchorRect = anchorElem.getBoundingClientRect();
+              const top = e.clientY - anchorRect.top;
+              const left = e.clientX - anchorRect.left;
+              menu.style.transform = `translate(${left}px, ${top}px)`;
+              menu.classList.add('table-cell-action-button-container--active');
+              menu.classList.remove('table-cell-action-button-container--inactive');
+            }
+          }
+        }, { editor });
+      } else {
+        setIsMenuOpen(false);
       }
-
-      tableCellParentNodeDOM = editor.getElementByKey(
-        tableCellNodeFromSelection.getKey(),
-      );
-
-      if (
-        tableCellParentNodeDOM == null ||
-        !tableCellNodeFromSelection.isAttached()
-      ) {
-        return disable();
-      }
-
-      if (checkTableCellOverflow(tableCellParentNodeDOM)) {
-        return disable();
-      }
-
-      const tableNode = $getTableNodeFromLexicalNodeOrThrow(
-        tableCellNodeFromSelection,
-      );
-      const tableElement = getTableElement(
-        tableNode,
-        editor.getElementByKey(tableNode.getKey()),
-      );
-
-      if (tableElement === null) {
-        throw new Error(
-          'TableActionMenu: Expected to find tableElement in DOM',
-        );
-      }
-
-      tableObserver = getTableObserverFromTableElement(tableElement);
-      setTableMenuCellNode(tableCellNodeFromSelection);
-    } else if ($isTableSelection(selection)) {
-      const anchorNode = $getTableCellNodeFromLexicalNode(
-        selection.anchor.getNode(),
-      );
-      if (!$isTableCellNode(anchorNode)) {
-        throw new Error('TableSelection anchorNode must be a TableCellNode');
-      }
-      const tableNode = $getTableNodeFromLexicalNodeOrThrow(anchorNode);
-      const tableElement = getTableElement(
-        tableNode,
-        editor.getElementByKey(tableNode.getKey()),
-      );
-      if (tableElement === null) {
-        throw new Error(
-          'TableActionMenu: Expected to find tableElement in DOM',
-        );
-      }
-      tableObserver = getTableObserverFromTableElement(tableElement);
-      tableCellParentNodeDOM = editor.getElementByKey(anchorNode.getKey());
-
-      if (tableCellParentNodeDOM === null) {
-        return disable();
-      }
-
-      if (checkTableCellOverflow(tableCellParentNodeDOM)) {
-        return disable();
-      }
-    } else if (!activeElement) {
-      return disable();
-    }
-    if (tableObserver === null || tableCellParentNodeDOM === null) {
-      return disable();
-    }
-    const enabled = !tableObserver || !tableObserver.isSelecting;
-    menu.classList.toggle(
-      'table-cell-action-button-container--active',
-      enabled,
-    );
-    menu.classList.toggle(
-      'table-cell-action-button-container--inactive',
-      !enabled,
-    );
-    if (enabled) {
-      const tableCellRect = tableCellParentNodeDOM.getBoundingClientRect();
-      const anchorRect = anchorElem.getBoundingClientRect();
-      const top = tableCellRect.top - anchorRect.top;
-      const left = tableCellRect.right - anchorRect.left;
-      menu.style.transform = `translate(${left}px, ${top}px)`;
-    }
-  }, [editor, anchorElem, checkTableCellOverflow]);
-
-  useEffect(() => {
-    // We call the $moveMenu callback every time the selection changes,
-    // once up front, and once after each pointerUp
-    let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
-    const callback = () => {
-      timeoutId = undefined;
-      editor.getEditorState().read($moveMenu);
     };
-    const delayedCallback = () => {
-      if (timeoutId === undefined) {
-        timeoutId = setTimeout(callback, 0);
-      }
-      return false;
+
+    rootElement.addEventListener('contextmenu', handleContextMenu);
+    return () => {
+      rootElement.removeEventListener('contextmenu', handleContextMenu);
     };
-    return mergeRegister(
-      editor.registerUpdateListener(delayedCallback),
-      editor.registerCommand(
-        SELECTION_CHANGE_COMMAND,
-        delayedCallback,
-        COMMAND_PRIORITY_CRITICAL,
-      ),
-      editor.registerRootListener((rootElement, prevRootElement) => {
-        if (prevRootElement) {
-          prevRootElement.removeEventListener('pointerup', delayedCallback);
-        }
-        if (rootElement) {
-          rootElement.addEventListener('pointerup', delayedCallback);
-          delayedCallback();
-        }
-      }),
-      () => clearTimeout(timeoutId),
-    );
-  });
-
-  const prevTableCellDOM = useRef(tableCellNode);
-
-  useEffect(() => {
-    if (prevTableCellDOM.current !== tableCellNode) {
-      setIsMenuOpen(false);
-    }
-
-    prevTableCellDOM.current = tableCellNode;
-  }, [prevTableCellDOM, tableCellNode]);
+  }, [editor, anchorElem]);
 
   return (
-    <div className="table-cell-action-button-container" ref={menuButtonRef}>
+    <div className="table-cell-action-button-container table-cell-action-button-container--inactive" ref={menuButtonRef} style={{ pointerEvents: 'none' }}>
       {tableCellNode != null && (
         <>
-          <button
-            type="button"
-            className="table-cell-action-button chevron-down"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsMenuOpen(!isMenuOpen);
-            }}
-            ref={menuRootRef}>
-            <i className="chevron-down" />
-          </button>
           {colorPickerModal}
           {isMenuOpen && (
-            <TableActionMenu
-              contextRef={menuRootRef}
-              setIsMenuOpen={setIsMenuOpen}
-              onClose={() => setIsMenuOpen(false)}
-              tableCellNode={tableCellNode}
-              cellMerge={cellMerge}
-              showColorPickerModal={showColorPickerModal}
-            />
+            <div style={{ pointerEvents: 'auto' }}>
+              <TableActionMenu
+                contextRef={menuButtonRef}
+                setIsMenuOpen={setIsMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                tableCellNode={tableCellNode}
+                cellMerge={cellMerge}
+                showColorPickerModal={showColorPickerModal}
+              />
+            </div>
           )}
         </>
       )}

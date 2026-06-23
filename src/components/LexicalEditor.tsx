@@ -23,11 +23,17 @@ import {ControlledValuePlugin} from './plugins/ControlledValuePlugin';
 import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
 import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
 import {CodeHighlightPlugin} from './plugins/CodeHighlightPlugin';
+import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
+import {useState, useCallback} from 'react';
 import EmojiPickerPlugin from './plugins/extended/EmojiPickerPlugin';
+import TableActionMenuPlugin from './plugins/extended/TableActionMenuPlugin';
+import TableHoverActionsPlugin from './plugins/extended/TableHoverActionsPlugin';
+import TableCellResizerPlugin from './plugins/extended/TableCellResizer';
 import {LexicalContentEditable} from '../ui/ContentEditable';
 import {editorNodes} from '../nodes/EditorNodes';
 import theme from '../themes/DefaultTheme';
 import {LexicalEditorProps} from '../types';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const MATCHERS = [
   (text: string) => {
@@ -72,81 +78,118 @@ export function LexicalEditor({
     <LexicalComposer initialConfig={initialConfig}>
       <SharedHistoryContext>
         <ToolbarContext>
-          <div className={`Lexiform__editorContainer ${className}`} style={style}>
-            <ToolbarPluginWrapper />
-            
-            <div className="Lexiform__editorInner">
-              <RichTextPlugin
-                contentEditable={
-                  <div className="Lexiform__editorScroller">
-                    <div className="Lexiform__editor" ref={null}>
-                      <LexicalContentEditable placeholder={placeholder} />
-                    </div>
-                  </div>
-                }
-                ErrorBoundary={LexicalErrorBoundary}
-              />
-              
-              <HistoryPlugin />
-              {autoFocus && <AutoFocusPlugin />}
-              <ListPlugin />
-              <CheckListPlugin />
-              <TabIndentationPlugin />
-              <ClearEditorPlugin />
-              <HashtagPlugin />
-              <LinkPlugin />
-              <AutoLinkPlugin matchers={MATCHERS} />
-              <HorizontalRulePlugin />
-              <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-              <CodeHighlightPlugin />
-              <FloatingLinkEditorPluginWrapper />
-              <FloatingTextFormatToolbarPluginWrapper />
-              <EmojiPickerPlugin />
-              {plugins}
-
-              {value !== undefined && (
-                <ControlledValuePlugin value={value} format={outputFormat} />
-              )}
-              {onChange && (
-                <OnChangePlugin onChange={onChange} outputFormat={outputFormat} />
-              )}
-            </div>
-          </div>
+          <EditorShell
+            placeholder={placeholder}
+            autoFocus={autoFocus}
+            className={className}
+            style={style}
+            plugins={plugins}
+            value={value}
+            onChange={onChange}
+            outputFormat={outputFormat}
+          />
         </ToolbarContext>
       </SharedHistoryContext>
     </LexicalComposer>
   );
 }
 
-// Wrapping components that need access to composer context
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {useState} from 'react';
-
-function ToolbarPluginWrapper() {
+/**
+ * Inner shell component that has access to LexicalComposerContext.
+ * This solves the problem of needing shared state (isLinkEditMode)
+ * between the toolbar and the floating link editor.
+ */
+function EditorShell({
+  placeholder,
+  autoFocus,
+  className,
+  style,
+  plugins,
+  value,
+  onChange,
+  outputFormat,
+}: {
+  placeholder: string;
+  autoFocus: boolean;
+  className: string;
+  style?: React.CSSProperties;
+  plugins?: React.ReactNode;
+  value?: string;
+  onChange?: (value: string) => void;
+  outputFormat: 'json' | 'html' | 'markdown';
+}) {
   const [editor] = useLexicalComposerContext();
   const [activeEditor, setActiveEditor] = useState(editor);
   const [isLinkEditMode, setIsLinkEditMode] = useState(false);
-  
-  return (
-    <ToolbarPlugin 
-      editor={editor} 
-      activeEditor={activeEditor} 
-      setActiveEditor={setActiveEditor} 
-      setIsLinkEditMode={setIsLinkEditMode} 
-    />
-  );
-}
+  const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
 
-function FloatingLinkEditorPluginWrapper() {
-  const [isLinkEditMode, setIsLinkEditMode] = useState(false);
-  return (
-    <FloatingLinkEditorPlugin
-      isLinkEditMode={isLinkEditMode}
-      setIsLinkEditMode={setIsLinkEditMode}
-    />
-  );
-}
+  const onRef = useCallback((_floatingAnchorElem: HTMLDivElement) => {
+    if (_floatingAnchorElem !== null) {
+      setFloatingAnchorElem(_floatingAnchorElem);
+    }
+  }, []);
 
-function FloatingTextFormatToolbarPluginWrapper() {
-  return <FloatingTextFormatToolbarPlugin />;
+  return (
+    <div className={`Lexiform__editorContainer ${className}`} style={style}>
+      <ToolbarPlugin
+        editor={editor}
+        activeEditor={activeEditor}
+        setActiveEditor={setActiveEditor}
+        setIsLinkEditMode={setIsLinkEditMode}
+      />
+
+      <div className="Lexiform__editorInner">
+        <RichTextPlugin
+          contentEditable={
+            <div className="Lexiform__editorScroller">
+              <div className="Lexiform__editor" ref={onRef}>
+                <LexicalContentEditable placeholder={placeholder} />
+              </div>
+            </div>
+          }
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+
+        <HistoryPlugin />
+        {autoFocus && <AutoFocusPlugin />}
+        <ListPlugin />
+        <CheckListPlugin />
+        <TabIndentationPlugin />
+        <ClearEditorPlugin />
+        <HashtagPlugin />
+        <LinkPlugin />
+        <AutoLinkPlugin matchers={MATCHERS} />
+        <HorizontalRulePlugin />
+        <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+        <CodeHighlightPlugin />
+
+        {/* Table plugins - injected internally for full table support */}
+        <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />
+        <TableCellResizerPlugin />
+        {floatingAnchorElem && (
+          <>
+            {/* Floating editors that need anchorElem */}
+            <FloatingLinkEditorPlugin
+              isLinkEditMode={isLinkEditMode}
+              setIsLinkEditMode={setIsLinkEditMode}
+              anchorElem={floatingAnchorElem}
+            />
+            <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} setIsLinkEditMode={setIsLinkEditMode} />
+            <TableActionMenuPlugin anchorElem={floatingAnchorElem} cellMerge={true} />
+            <TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
+          </>
+        )}
+
+        <EmojiPickerPlugin />
+        {plugins}
+
+        {value !== undefined && (
+          <ControlledValuePlugin value={value} format={outputFormat} />
+        )}
+        {onChange && (
+          <OnChangePlugin onChange={onChange} outputFormat={outputFormat} />
+        )}
+      </div>
+    </div>
+  );
 }

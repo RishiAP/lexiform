@@ -98,7 +98,7 @@ export default function MyEditor() {
 
 Lexiform is built to be a team player. Its internal variables automatically look for standard Shadcn UI variables (`--background`, `--foreground`, `--primary`, etc.).
 
-If your app uses `next-themes` (or manually applies `.dark` classes to the `<html>` or `<body>` tag), Lexiform will seamlessly switch to its dark theme. 
+If your app uses `next-themes` (or manually applies `.dark` classes to the `<html>` or `<body>` tag), Lexiform will seamlessly switch to its dark theme. Furthermore, Lexiform features **two-way theme synchronization** for advanced plugins like Excalidraw: toggling the theme from inside the Excalidraw whiteboard will automatically dispatch `StorageEvent`s and update your website's global theme in real-time.
 
 If you want to manually force themes without `next-themes`, apply the `lexiform-dark` or `lexiform-light` classes.
 

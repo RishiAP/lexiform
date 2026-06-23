@@ -76,7 +76,9 @@ const removeStyleFromSvg_HACK = (svg: SVGElement) => {
   }
 
   if (styleTag && styleTag.tagName === 'style') {
-    styleTag.remove();
+    const text = styleTag.textContent || '';
+    // Remove the external font imports but keep the other styles (like dark mode filters)
+    styleTag.textContent = text.replace(/@import url\([^)]+\);/g, '');
   }
 };
 
@@ -94,11 +96,34 @@ export default function ExcalidrawImage({
   height = 'inherit',
 }: Props): JSX.Element {
   const [Svg, setSvg] = useState<SVGElement | null>(null);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    // Initial check
+    const checkTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark') || 
+                     document.body.classList.contains('dark') ||
+                     document.documentElement.classList.contains('lexiform-dark');
+      setTheme(isDark ? 'dark' : 'light');
+    };
+    
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const setContent = async () => {
       const svg: SVGElement = await exportToSvg({
-        appState,
+        appState: {
+          ...appState,
+          theme,
+          exportWithDarkMode: theme === 'dark',
+        },
         elements,
         files,
       });
@@ -111,7 +136,7 @@ export default function ExcalidrawImage({
       setSvg(svg);
     };
     setContent();
-  }, [elements, files, appState]);
+  }, [elements, files, appState, theme]);
 
   const containerStyle: React.CSSProperties = {};
   if (width !== 'inherit') {

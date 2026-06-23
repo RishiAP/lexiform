@@ -466,6 +466,7 @@ export function ToolbarPlugin({
           )}
           <button
             disabled={!isEditable}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={insertLink}
             className={`Lexiform__toolbarButton ${toolbarState.isLink ? 'active' : ''}`}
             aria-label="Insert link"

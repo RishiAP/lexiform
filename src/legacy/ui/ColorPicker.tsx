@@ -77,6 +77,7 @@ export default function ColorPicker({
     if (/^#[0-9A-Fa-f]{6}$/i.test(hex)) {
       const newColor = transformColor('hex', hex);
       setSelfColor(newColor);
+      if (onChange) onChange(newColor.hex, skipAddingToHistoryStack);
     }
   };
 
@@ -89,6 +90,7 @@ export default function ColorPicker({
     const newColor = transformColor('hsv', newHsv);
     setSelfColor(newColor);
     setInputColor(newColor.hex);
+    if (onChange) onChange(newColor.hex, skipAddingToHistoryStack);
   };
 
   const onMoveHue = ({x}: Position) => {
@@ -97,15 +99,8 @@ export default function ColorPicker({
 
     setSelfColor(newColor);
     setInputColor(newColor.hex);
+    if (onChange) onChange(newColor.hex, skipAddingToHistoryStack);
   };
-
-  useEffect(() => {
-    // Check if the dropdown is actually active
-    if (innerDivRef.current !== null && onChange) {
-      onChange(selfColor.hex, skipAddingToHistoryStack);
-      setInputColor(selfColor.hex);
-    }
-  }, [selfColor, onChange]);
 
   useEffect(() => {
     if (color === undefined) {
@@ -131,6 +126,7 @@ export default function ColorPicker({
             onClick={() => {
               setInputColor(basicColor);
               setSelfColor(transformColor('hex', basicColor));
+              if (onChange) onChange(basicColor, skipAddingToHistoryStack);
             }}
           />
         ))}

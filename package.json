@@ -1,6 +1,6 @@
 {
   "name": "@rishiap/lexiform",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
@@ -59,6 +59,7 @@
     "@lexical/react": "^0.45.0",
     "@lexical/rich-text": "^0.45.0",
     "@lexical/selection": "^0.45.0",
+    "@lexical/table": "^0.45.0",
     "@lexical/utils": "^0.45.0",
     "katex": "^0.17.0",
     "lexical": "^0.45.0",
@@ -83,6 +84,7 @@
   },
   "devDependencies": {
     "@lexical/headless": "^0.45.0",
+    "@lexical/table": "^0.45.0",
     "@types/katex": "^0.16.8",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

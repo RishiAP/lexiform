@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState, Dispatch} from 'react';
 import {createPortal} from 'react-dom';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {mergeRegister} from '@lexical/utils';
@@ -34,33 +34,35 @@ import {getDOMRangeRect} from '../../utils/getDOMRangeRect';
 function FloatingTextFormatToolbar({
   editor,
   anchorElem,
-  isText,
-  isLink,
   isBold,
+  isCode,
   isItalic,
-  isUnderline,
+  isLink,
   isStrikethrough,
   isSubscript,
   isSuperscript,
+  isUnderline,
   isLowercase,
   isUppercase,
   isCapitalize,
-  isCode,
+  isText,
+  setIsLinkEditMode,
 }: {
   editor: LexicalEditor;
   anchorElem: HTMLElement;
-  isText: boolean;
-  isLink: boolean;
   isBold: boolean;
+  isCode: boolean;
   isItalic: boolean;
-  isUnderline: boolean;
+  isLink: boolean;
   isStrikethrough: boolean;
   isSubscript: boolean;
   isSuperscript: boolean;
+  isUnderline: boolean;
   isLowercase: boolean;
   isUppercase: boolean;
   isCapitalize: boolean;
-  isCode: boolean;
+  isText: boolean;
+  setIsLinkEditMode: Dispatch<boolean>;
 }) {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
@@ -259,8 +261,10 @@ function FloatingTextFormatToolbar({
         type="button"
         onClick={() => {
           if (!isLink) {
+            setIsLinkEditMode(true);
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
           } else {
+            setIsLinkEditMode(false);
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
           }
         }}
@@ -277,6 +281,7 @@ function FloatingTextFormatToolbar({
 function useFloatingTextFormatToolbar(
   editor: LexicalEditor,
   anchorElem: HTMLElement,
+  setIsLinkEditMode: Dispatch<boolean>,
 ) {
   const [isText, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
@@ -376,6 +381,7 @@ function useFloatingTextFormatToolbar(
       isCapitalize={isCapitalize}
       isCode={isCode}
       isText={isText}
+      setIsLinkEditMode={setIsLinkEditMode}
     />,
     anchorElem,
   );
@@ -383,9 +389,11 @@ function useFloatingTextFormatToolbar(
 
 export function FloatingTextFormatToolbarPlugin({
   anchorElem = document.body,
+  setIsLinkEditMode,
 }: {
   anchorElem?: HTMLElement;
+  setIsLinkEditMode: Dispatch<boolean>;
 }) {
   const [editor] = useLexicalComposerContext();
-  return useFloatingTextFormatToolbar(editor, anchorElem);
+  return useFloatingTextFormatToolbar(editor, anchorElem, setIsLinkEditMode);
 }

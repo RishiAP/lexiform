@@ -24,8 +24,8 @@ select {
 }
 
 :root {
-  --select-border: #393939;
-  --select-focus: #101484;
+  --select-border: var(--lexiform-border, #393939);
+  --select-focus: var(--lexiform-ring, #101484);
   --select-arrow: var(--select-border);
 }
 
@@ -33,10 +33,11 @@ select {
   min-width: 160px;
   max-width: 290px;
   border: 1px solid var(--select-border);
-  border-radius: 0.25em;
+  border-radius: calc(var(--lexiform-radius, 0.25em) - 2px);
   padding: 0.25em 0.5em;
   font-size: 1rem;
   cursor: pointer;
   line-height: 1.4;
-  background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+  background-color: var(--lexiform-background, #ffffff);
+  color: var(--lexiform-foreground, #000000);
 }

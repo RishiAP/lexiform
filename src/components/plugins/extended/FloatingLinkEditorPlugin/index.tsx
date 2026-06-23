@@ -126,20 +126,29 @@ function FloatingLinkEditor({
             domRect = element.getBoundingClientRect();
           }
         }
-      } else if (
-        nativeSelection !== null &&
-        rootElement.contains(nativeSelection.anchorNode)
-      ) {
-        domRect =
-          nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+      } else if ($isRangeSelection(selection)) {
+        const nodes = selection.getNodes();
+        if (nodes.length > 0) {
+          const node = getSelectedNode(selection);
+          const linkNode = $findMatchingParent(node, $isLinkNode) || node;
+          const element = editor.getElementByKey(linkNode.getKey());
+          if (element) {
+            domRect = element.getBoundingClientRect();
+          } else if (
+            nativeSelection !== null &&
+            rootElement.contains(nativeSelection.anchorNode)
+          ) {
+            domRect = nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+          }
+        }
       }
 
       if (domRect) {
-        domRect.y += 40;
+        domRect = new DOMRect(domRect.x, domRect.y + 40, domRect.width, domRect.height);
         setFloatingElemPositionForLinkEditor(domRect, editorElem, anchorElem);
       }
       setLastSelection(selection);
-    } else if (!activeElement || activeElement.className !== 'link-input') {
+    } else if (!activeElement || activeElement.className !== 'Lexiform__linkInput') {
       if (rootElement !== null) {
         setFloatingElemPositionForLinkEditor(null, editorElem, anchorElem);
       }
@@ -261,12 +270,15 @@ function FloatingLinkEditor({
   };
 
   return (
-    <div ref={editorRef} className="link-editor">
+    <div ref={editorRef} className="Lexiform__linkEditor">
       {!isLink ? null : isLinkEditMode ? (
-        <>
+        <form
+          className="Lexiform__linkEditorForm"
+          onSubmit={(e) => { e.preventDefault(); handleLinkSubmission(e as any); }}
+        >
           <input
             ref={inputRef}
-            className="link-input"
+            className="Lexiform__linkInput"
             value={editedLinkUrl}
             onChange={(event) => {
               setEditedLinkUrl(event.target.value);
@@ -275,54 +287,59 @@ function FloatingLinkEditor({
               monitorInputInteraction(event);
             }}
           />
-          <div>
-            <div
-              className="link-cancel"
-              role="button"
-              tabIndex={0}
+          <div className="Lexiform__linkActions">
+            <button
+              type="button"
+              className="Lexiform__linkActionButton"
               onMouseDown={preventDefault}
               onClick={() => {
                 setIsLinkEditMode(false);
               }}
-            />
+            >
+              Cancel
+            </button>
 
-            <div
-              className="link-confirm"
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
+              className="Lexiform__linkActionButton primary"
               onMouseDown={preventDefault}
               onClick={handleLinkSubmission}
-            />
+            >
+              Save
+            </button>
           </div>
-        </>
+        </form>
       ) : (
-        <div className="link-view">
+        <div className="Lexiform__linkView">
           <a
+            className="Lexiform__linkAnchor"
             href={sanitizeUrl(linkUrl)}
             target="_blank"
             rel="noopener noreferrer">
             {linkUrl}
           </a>
-          <div
-            className="link-edit"
-            role="button"
-            tabIndex={0}
+          <button
+            type="button"
+            className="Lexiform__linkActionButton"
             onMouseDown={preventDefault}
             onClick={(event) => {
               event.preventDefault();
               setEditedLinkUrl(linkUrl);
               setIsLinkEditMode(true);
             }}
-          />
-          <div
-            className="link-trash"
-            role="button"
-            tabIndex={0}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="Lexiform__linkActionButton"
             onMouseDown={preventDefault}
             onClick={() => {
               editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
             }}
-          />
+          >
+            Remove
+          </button>
         </div>
       )}
     </div>

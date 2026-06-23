@@ -217,13 +217,60 @@ export default function ExcalidrawModal({
     return null;
   }
 
+  useEffect(() => {
+    // Check initial theme
+    if (typeof document !== 'undefined') {
+      const isDark = document.documentElement.classList.contains('dark') || 
+                     document.body.classList.contains('dark') ||
+                     document.documentElement.classList.contains('lexiform-dark');
+      
+      // Observe for theme changes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'class') {
+            const isNowDark = document.documentElement.classList.contains('dark') || 
+                              document.body.classList.contains('dark') ||
+                              document.documentElement.classList.contains('lexiform-dark');
+            excalidrawAPI?.updateScene({ appState: { theme: isNowDark ? 'dark' : 'light' } });
+          }
+        });
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      return () => observer.disconnect();
+    }
+  }, [excalidrawAPI]);
+
   const onChange = (
     els: ExcalidrawInitialElements,
-    _: AppState,
+    appState: AppState,
     fls: BinaryFiles,
   ) => {
     setElements(els);
     setFiles(fls);
+
+    if (typeof document !== 'undefined') {
+      const isDark = document.documentElement.classList.contains('dark') || 
+                     document.body.classList.contains('dark') ||
+                     document.documentElement.classList.contains('lexiform-dark');
+      
+      const excalidrawIsDark = appState.theme === 'dark';
+      
+      if (isDark && !excalidrawIsDark) {
+         document.documentElement.classList.remove('dark', 'lexiform-dark');
+         document.body.classList.remove('dark');
+         document.documentElement.style.colorScheme = 'light';
+         // Attempt to sync with next-themes if used
+         window.localStorage.setItem('theme', 'light');
+         window.dispatchEvent(new StorageEvent('storage', { key: 'theme', newValue: 'light' }));
+      } else if (!isDark && excalidrawIsDark) {
+         document.documentElement.classList.add('dark');
+         document.documentElement.style.colorScheme = 'dark';
+         // Attempt to sync with next-themes if used
+         window.localStorage.setItem('theme', 'dark');
+         window.dispatchEvent(new StorageEvent('storage', { key: 'theme', newValue: 'dark' }));
+      }
+    }
   };
 
   return createPortal(
@@ -239,7 +286,17 @@ export default function ExcalidrawModal({
               onChange={onChange}
               excalidrawAPI={excalidrawAPIRefCallback}
               initialData={{
-                appState: initialAppState || {isLoading: false},
+                appState: {
+                  ...(initialAppState || {}),
+                  theme:
+                    initialAppState?.theme ||
+                    (typeof document !== 'undefined' &&
+                    (document.documentElement.classList.contains('dark') ||
+                      document.body.classList.contains('dark') ||
+                      document.documentElement.classList.contains('lexiform-dark'))
+                      ? 'dark'
+                      : 'light'),
+                },
                 elements: initialElements,
                 files: initialFiles,
               }}

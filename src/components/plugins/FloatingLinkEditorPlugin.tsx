@@ -110,11 +110,19 @@ function FloatingLinkEditor({
             domRect = element.getBoundingClientRect();
           }
         }
-      } else if (
-        nativeSelection !== null &&
-        rootElement.contains(nativeSelection.anchorNode)
-      ) {
-        domRect = nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+      } else if ($isRangeSelection(selection)) {
+        if (
+          nativeSelection !== null &&
+          rootElement.contains(nativeSelection.anchorNode)
+        ) {
+          domRect = nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+        } else {
+          const node = getSelectedNode(selection);
+          const element = editor.getElementByKey(node.getKey());
+          if (element) {
+            domRect = element.getBoundingClientRect();
+          }
+        }
       }
 
       if (domRect) {
@@ -241,7 +249,7 @@ function FloatingLinkEditor({
 
   return (
     <div ref={editorRef} className="Lexiform__linkEditor">
-      {!isLink ? null : isLinkEditMode ? (
+      {isLinkEditMode ? (
         <div className="Lexiform__linkEditorForm">
           <input
             ref={inputRef}
@@ -272,7 +280,7 @@ function FloatingLinkEditor({
             </button>
           </div>
         </div>
-      ) : (
+      ) : isLink ? (
         <div className="Lexiform__linkView">
           <a
             href={sanitizeUrl(linkUrl)}
@@ -303,7 +311,7 @@ function FloatingLinkEditor({
             <Trash2 size={14} />
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -13,13 +13,16 @@
   padding-left: 15px;
   padding-right: 15px;
   border: 0px;
-  background-color: #eee;
-  border-radius: 5px;
+  background-color: var(--lexiform-primary, #18181b);
+  color: var(--lexiform-primary-foreground, #fafafa);
+  border-radius: var(--lexiform-radius, 5px);
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
 }
 .Button__root:hover {
-  background-color: #ddd;
+  opacity: 0.9;
 }
 .Button__small {
   padding-top: 5px;
@@ -29,8 +32,9 @@
   font-size: 13px;
 }
 .Button__disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 .Button__disabled:hover {
-  background-color: #eee;
+  opacity: 0.5;
 }

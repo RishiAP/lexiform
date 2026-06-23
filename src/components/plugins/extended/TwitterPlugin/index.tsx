@@ -12,15 +12,21 @@ import type {JSX} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$insertNodeToNearestRoot} from '@lexical/utils';
 import {COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand, LexicalEditor} from 'lexical';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useMemo} from 'react';
 
 import {$createTweetNode, TweetNode} from '../../../../nodes/extended/TweetNode';
-import TextInput from '../../../../legacy/ui/TextInput';
 import Button from '../../../../legacy/ui/Button';
 
 export const INSERT_TWEET_COMMAND: LexicalCommand<string> = createCommand(
   'INSERT_TWEET_COMMAND',
 );
+
+const TWEET_REGEX = /(?:twitter\.com|x\.com)\/(?:#!\/)?\w+\/status(?:es)?\/(\d+)/;
+
+function extractTweetId(url: string): string | null {
+  const match = url.match(TWEET_REGEX);
+  return match ? match[1] : null;
+}
 
 export function InsertTweetDialog({
   activeEditor,
@@ -30,32 +36,46 @@ export function InsertTweetDialog({
   onClose: () => void;
 }): JSX.Element {
   const [url, setUrl] = useState('');
+  const [touched, setTouched] = useState(false);
+
+  const tweetId = useMemo(() => extractTweetId(url), [url]);
+  const isValid = tweetId !== null;
+  const showError = touched && url.length > 0 && !isValid;
 
   const onClick = () => {
-    const match = url.match(
-      /(?:twitter\.com|x\.com)\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)/,
-    );
-    const id = match ? match[3] : null;
-    if (id) {
-      activeEditor.dispatchCommand(INSERT_TWEET_COMMAND, id);
+    if (tweetId) {
+      activeEditor.dispatchCommand(INSERT_TWEET_COMMAND, tweetId);
     }
     onClose();
   };
 
   return (
-    <>
-      <TextInput
-        label="Tweet URL"
-        placeholder="i.e. https://twitter.com/user/status/..."
-        onChange={setUrl}
-        value={url}
-      />
-      <div className="Lexiform__dialogActions" style={{marginTop: '20px', display: 'flex', justifyContent: 'flex-end'}}>
-        <Button disabled={!url} onClick={onClick}>
-          Confirm
-        </Button>
+    <div style={{ minWidth: '400px', maxWidth: '100%' }}>
+      <div className="Input__wrapper">
+        <label className="Input__label">Tweet URL</label>
+        <input
+          className={`Input__input ${showError ? 'Input__input--error' : ''}`}
+          placeholder="https://x.com/user/status/123456789"
+          value={url}
+          onChange={(e) => {
+            setUrl(e.target.value);
+            if (!touched) setTouched(true);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && isValid) onClick();
+          }}
+        />
       </div>
-    </>
+      {showError && (
+        <p style={{color: 'var(--lexiform-destructive, #ef4444)', fontSize: '12px', margin: '0 0 8px 0'}}>
+          Please enter a valid Tweet URL (e.g. https://x.com/user/status/...)
+        </p>
+      )}
+      <div style={{marginTop: '16px', display: 'flex', justifyContent: 'flex-end', gap: '8px'}}>
+        <Button onClick={onClose} small>Cancel</Button>
+        <Button disabled={!isValid} onClick={onClick}>Confirm</Button>
+      </div>
+    </div>
   );
 }
 

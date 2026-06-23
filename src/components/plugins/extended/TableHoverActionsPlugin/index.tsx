@@ -51,7 +51,8 @@ function TableHoverActionsContainer({
   const [isShownColumn, setShownColumn] = useState<boolean>(false);
   const [shouldListenMouseMove, setShouldListenMouseMove] =
     useState<boolean>(false);
-  const [position, setPosition] = useState({});
+  const [positionRow, setPositionRow] = useState({});
+  const [positionColumn, setPositionColumn] = useState({});
   const tableSetRef = useRef<Set<NodeKey>>(new Set());
   const tableCellDOMNodeRef = useRef<HTMLElement | null>(null);
 
@@ -115,50 +116,40 @@ function TableHoverActionsContainer({
       );
 
       if (tableDOMElement) {
-        const {
-          width: tableElemWidth,
-          y: tableElemY,
-          right: tableElemRight,
-          left: tableElemLeft,
-          bottom: tableElemBottom,
-          height: tableElemHeight,
-        } = (tableDOMElement as HTMLTableElement).getBoundingClientRect();
-
-        // Adjust for using the scrollable table container
-        const parentElement = (tableDOMElement as HTMLTableElement)
-          .parentElement;
+        const tableElemRect = (tableDOMElement as HTMLTableElement).getBoundingClientRect();
+        const tableElemY = tableElemRect.y;
+        const tableElemBottom = tableElemRect.bottom;
+        const tableElemLeft = tableElemRect.left;
+        const tableElemRight = tableElemRect.right;
+        const tableElemWidth = tableElemRect.width;
+        const tableElemHeight = tableElemRect.height;
+        
+        const parentElement = (tableDOMElement as HTMLTableElement).parentElement;
         let tableHasScroll = false;
         if (
           parentElement &&
-          parentElement.classList.contains(
-            'PlaygroundEditorTheme__tableScrollableWrapper',
-          )
+          (parentElement.classList.contains('LexiformTheme__tableScrollableWrapper') ||
+            parentElement.classList.contains('PlaygroundEditorTheme__tableScrollableWrapper'))
         ) {
-          tableHasScroll =
-            parentElement.scrollWidth > parentElement.clientWidth;
+          tableHasScroll = parentElement.scrollWidth > parentElement.clientWidth;
         }
-        const {y: editorElemY, left: editorElemLeft} =
-          anchorElem.getBoundingClientRect();
 
-        if (hoveredRowNode) {
-          setShownColumn(false);
-          setShownRow(true);
-          setPosition({
-            height: BUTTON_WIDTH_PX,
-            left:
-              tableHasScroll && parentElement
-                ? parentElement.offsetLeft
-                : tableElemLeft - editorElemLeft,
-            top: tableElemBottom - editorElemY + 5,
-            width:
-              tableHasScroll && parentElement
-                ? parentElement.offsetWidth
-                : tableElemWidth,
-          });
-        } else if (hoveredColumnNode) {
+        const {y: editorElemY, left: editorElemLeft} = anchorElem.getBoundingClientRect();
+
+        // If hoveredRowNode and hoveredColumnNode were set, we always show BOTH buttons as requested, 
+        // using the full table bounds.
+        if (hoveredRowNode || hoveredColumnNode) {
           setShownColumn(true);
-          setShownRow(false);
-          setPosition({
+          setShownRow(true);
+          
+          setPositionRow({
+            height: BUTTON_WIDTH_PX,
+            left: tableHasScroll && parentElement ? parentElement.offsetLeft : tableElemLeft - editorElemLeft,
+            top: tableElemBottom - editorElemY + 5,
+            width: tableHasScroll && parentElement ? parentElement.offsetWidth : tableElemWidth,
+          });
+
+          setPositionColumn({
             height: tableElemHeight,
             left: tableElemRight - editorElemLeft + 5,
             top: tableElemY - editorElemY,
@@ -264,14 +255,14 @@ function TableHoverActionsContainer({
       {isShownRow && (
         <button
           className={`${getTheme()?.tableAddRows}`}
-          style={{...position}}
+          style={{...positionRow}}
           onClick={() => insertAction(true)}
         />
       )}
       {isShownColumn && (
         <button
           className={`${getTheme()?.tableAddColumns}`}
-          style={{...position}}
+          style={{...positionColumn}}
           onClick={() => insertAction(false)}
         />
       )}

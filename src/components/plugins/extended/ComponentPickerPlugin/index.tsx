@@ -15,7 +15,7 @@ import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
 } from '@lexical/list';
-import {INSERT_EMBED_COMMAND} from '@lexical/react/LexicalAutoEmbedPlugin';
+
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {INSERT_HORIZONTAL_RULE_COMMAND} from '@lexical/react/LexicalHorizontalRuleNode';
 import {
@@ -42,7 +42,7 @@ import useModal from '../../../../legacy/hooks/useModal';
 import catTypingGif from '../../../../legacy/images/cat-typing.gif';
 import { Type, Heading1, Heading2, Heading3, List, ListOrdered, CheckSquare, Quote, Code, Minus, Scissors, PenTool, BarChart2, Calculator, Image as ImageIcon, Columns, AlignLeft, AlignCenter, AlignRight, AlignJustify, Table as TableIcon, ChevronsUpDown, MonitorPlay, MessageCircle, LayoutTemplate } from 'lucide-react';
 import { YouTubeIcon, TwitterIcon, FigmaIcon } from '../../../../icons/EmbedIcons';
-import {EmbedConfigs} from '../AutoEmbedPlugin';
+
 import {INSERT_COLLAPSIBLE_COMMAND} from '../CollapsiblePlugin';
 import {InsertEquationDialog} from '../EquationsPlugin';
 import {INSERT_EXCALIDRAW_COMMAND} from '../ExcalidrawPlugin';
@@ -261,15 +261,7 @@ function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
           <InsertPollDialog activeEditor={editor} onClose={onClose} />
         )),
     }),
-    ...EmbedConfigs.map(
-      (embedConfig) =>
-        new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
-          icon: embedConfig.icon,
-          keywords: [...embedConfig.keywords, 'embed'],
-          onSelect: () =>
-            editor.dispatchCommand(INSERT_EMBED_COMMAND, embedConfig.type),
-        }),
-    ),
+
     new ComponentPickerOption('Equation', {
       icon: <Calculator size={16} />,
       keywords: ['equation', 'math', 'calculator'],

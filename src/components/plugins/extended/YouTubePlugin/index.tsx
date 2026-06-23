@@ -12,15 +12,21 @@ import type {JSX} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$insertNodeToNearestRoot} from '@lexical/utils';
 import {COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand, LexicalEditor} from 'lexical';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useMemo} from 'react';
 
 import {$createYouTubeNode, YouTubeNode} from '../../../../nodes/extended/YouTubeNode';
-import TextInput from '../../../../legacy/ui/TextInput';
 import Button from '../../../../legacy/ui/Button';
 
 export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = createCommand(
   'INSERT_YOUTUBE_COMMAND',
 );
+
+const YOUTUBE_REGEX = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+
+function extractYouTubeId(url: string): string | null {
+  const match = url.match(YOUTUBE_REGEX);
+  return match && match[2].length === 11 ? match[2] : null;
+}
 
 export function InsertYouTubeDialog({
   activeEditor,
@@ -30,32 +36,46 @@ export function InsertYouTubeDialog({
   onClose: () => void;
 }): JSX.Element {
   const [url, setUrl] = useState('');
+  const [touched, setTouched] = useState(false);
+
+  const videoId = useMemo(() => extractYouTubeId(url), [url]);
+  const isValid = videoId !== null;
+  const showError = touched && url.length > 0 && !isValid;
 
   const onClick = () => {
-    const match = url.match(
-      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/,
-    );
-    const id = match ? (match[2].length === 11 ? match[2] : null) : null;
-    if (id) {
-      activeEditor.dispatchCommand(INSERT_YOUTUBE_COMMAND, id);
+    if (videoId) {
+      activeEditor.dispatchCommand(INSERT_YOUTUBE_COMMAND, videoId);
     }
     onClose();
   };
 
   return (
-    <>
-      <TextInput
-        label="YouTube URL"
-        placeholder="i.e. https://www.youtube.com/watch?v=..."
-        onChange={setUrl}
-        value={url}
-      />
-      <div className="Lexiform__dialogActions" style={{marginTop: '20px', display: 'flex', justifyContent: 'flex-end'}}>
-        <Button disabled={!url} onClick={onClick}>
-          Confirm
-        </Button>
+    <div style={{ minWidth: '400px', maxWidth: '100%' }}>
+      <div className="Input__wrapper">
+        <label className="Input__label">YouTube URL</label>
+        <input
+          className={`Input__input ${showError ? 'Input__input--error' : ''}`}
+          placeholder="https://www.youtube.com/watch?v=..."
+          value={url}
+          onChange={(e) => {
+            setUrl(e.target.value);
+            if (!touched) setTouched(true);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && isValid) onClick();
+          }}
+        />
       </div>
-    </>
+      {showError && (
+        <p style={{color: 'var(--lexiform-destructive, #ef4444)', fontSize: '12px', margin: '0 0 8px 0'}}>
+          Please enter a valid YouTube URL (e.g. https://youtube.com/watch?v=...)
+        </p>
+      )}
+      <div style={{marginTop: '16px', display: 'flex', justifyContent: 'flex-end', gap: '8px'}}>
+        <Button onClick={onClose} small>Cancel</Button>
+        <Button disabled={!isValid} onClick={onClick}>Confirm</Button>
+      </div>
+    </div>
   );
 }
 
