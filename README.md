@@ -3,20 +3,20 @@
 [![NPM Version](https://img.shields.io/npm/v/@rishiap/lexiform)](https://www.npmjs.com/package/@rishiap/lexiform)
 [![Made by RishiAP](https://img.shields.io/badge/Made%20by-RishiAP-blue?style=flat-square&logo=github)](https://github.com/RishiAP)
 
-Lexiform is a highly polished, ultra-lightweight (under 200KB), headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`). Styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
+Lexiform is a highly polished, ultra-lightweight (under 100KB minified & gzipped), headless-compatible drop-in React rich text editor built on top of [Lexical](https://lexical.dev/) (`0.45.0`). Styled seamlessly with vanilla CSS + [Radix UI](https://www.radix-ui.com/) primitives + [Lucide React](https://lucide.dev/) icons.
 
 It abstracts away the complexity of Lexical's architecture and provides a stunning, modern, single `<LexicalEditor>` component for quick integration into Next.js, Vite, and other React apps.
 
 ## Features
 
-- **Ultra Lightweight**: Fully featured editor bundle that stays under 200KB by utilizing smart code-splitting (e.g. dynamically lazy-loading a 350KB emoji list).
+- **Ultra Lightweight**: Fully featured editor bundle that stays under 100KB (minified and gzipped) by utilizing smart code-splitting (e.g. dynamically lazy-loading a 350KB emoji list).
 - **Drop-in `<LexicalEditor />` Component**: Start using a rich text editor instantly.
 - **Beautiful UI**: Polished toolbar with vanilla CSS combined with robust Radix UI primitives.
 - **Native Shadcn & Tailwind Compatibility**: Inherits global CSS variables and natively supports standard `.dark` and `.light` theme classes, syncing perfectly with `next-themes`.
 - **Slash Menu (`/`) Component Picker**: Type `/` to bring up a Notion-style block menu.
 - **Floating Toolbar**: Select any text to instantly see a floating toolbar with quick formatting options (Bold, Italic, Link, Case formatting, Subscript, etc).
 - **Zero-Config JSON Compression**: Automatically strips Lexical defaults (like `version`, `direction`, `detail`) natively in the background, slashing the JSON payload size for ultra-lightweight database storage.
-- **Backend-Safe Serializers**: Includes SSR/backend-friendly HTML to Lexical JSON (`htmlToLexicalJSON`) and JSON to HTML (`lexicalJSONToHTML`) serializers.
+- **Backend-Safe Serializers**: Includes SSR/backend-friendly utilities to seamlessly convert Lexical JSON to HTML/Markdown and vice-versa.
 - **Feature-Rich Editing**:
   - Headings & Block types (H1-H6, Quote, Code, Lists)
   - Text Formatting (Bold, Italic, Underline, Strikethrough, Code, Subscript, Superscript, Case conversions)
@@ -75,7 +75,7 @@ export default function MyEditor() {
       <LexicalEditor
         value={content}
         onChange={(val) => setContent(val)}
-        outputFormat="json" // or "html"
+        outputFormat="json" // or "html" or "markdown"
         placeholder="Start typing..."
         nodes={ExtendedNodes}
         plugins={
@@ -104,16 +104,25 @@ If you want to manually force themes without `next-themes`, apply the `lexiform-
 
 ## Serializers
 
-Lexiform exports utilities for easily converting between Lexical JSON format and static HTML, making it easy to save to a database and render safely on the frontend.
+Lexiform exports utilities for easily converting between Lexical JSON format and static HTML or Markdown, making it easy to save to a database and render safely on the frontend.
 
 ```tsx
-import { lexicalJSONToHTML, htmlToLexicalJSON } from '@rishiap/lexiform';
+import { 
+  lexicalJSONToHTML, 
+  htmlToLexicalJSON,
+  lexicalJSONToMarkdown,
+  markdownToLexicalJSON
+} from '@rishiap/lexiform';
 
 // Generate HTML from JSON
 const htmlString = lexicalJSONToHTML(lexicalJsonString);
 
-// Parse HTML back into Lexical JSON (for editing)
-const jsonString = htmlToLexicalJSON(htmlString);
+// Or generate Markdown from JSON
+const markdownString = lexicalJSONToMarkdown(lexicalJsonString);
+
+// Parse HTML or Markdown back into Lexical JSON (for editing)
+const jsonFromHtml = htmlToLexicalJSON(htmlString);
+const jsonFromMd = markdownToLexicalJSON(markdownString);
 ```
 
 ## Available Plugins

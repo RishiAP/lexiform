@@ -4,6 +4,8 @@ import { EditorOutputFormat } from '../../types';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { $getRoot, $insertNodes } from 'lexical';
 import { compressLexicalJSON, decompressLexicalJSON } from '../../utils/serializers';
+import { $convertToMarkdownString, $convertFromMarkdownString } from '@lexical/markdown';
+import { PLAYGROUND_TRANSFORMERS } from './extended/MarkdownTransformers';
 
 interface ControlledValuePluginProps {
   value?: string;
@@ -22,6 +24,8 @@ export function ControlledValuePlugin({ value, format = 'json' }: ControlledValu
       if (format === 'json') {
         const rawJson = editor.getEditorState().toJSON();
         currentContent = JSON.stringify(compressLexicalJSON(rawJson));
+      } else if (format === 'markdown') {
+        currentContent = $convertToMarkdownString(PLAYGROUND_TRANSFORMERS);
       } else {
         currentContent = $generateHtmlFromNodes(editor, null);
       }
@@ -41,6 +45,10 @@ export function ControlledValuePlugin({ value, format = 'json' }: ControlledValu
       } catch (e) {
         console.error('Lexiform: Failed to parse JSON value', e);
       }
+    } else if (format === 'markdown') {
+      editor.update(() => {
+        $convertFromMarkdownString(value, PLAYGROUND_TRANSFORMERS);
+      });
     } else {
       editor.update(() => {
         const parser = new DOMParser();

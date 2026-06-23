@@ -3,6 +3,8 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import { EditorOutputFormat } from '../../types';
 import { $generateHtmlFromNodes } from '@lexical/html';
 import { compressLexicalJSON } from '../../utils/serializers';
+import { $convertToMarkdownString } from '@lexical/markdown';
+import { PLAYGROUND_TRANSFORMERS } from './extended/MarkdownTransformers';
 
 interface OnChangePluginProps {
   onChange?: (val: string, format: EditorOutputFormat) => void;
@@ -29,6 +31,11 @@ export function OnChangePlugin({ onChange, outputFormat = 'json' }: OnChangePlug
             const rawJson = editor.getEditorState().toJSON();
             const compressed = compressLexicalJSON(rawJson);
             onChange(JSON.stringify(compressed), 'json');
+          });
+        } else if (outputFormat === 'markdown') {
+          editor.getEditorState().read(() => {
+            const markdown = $convertToMarkdownString(PLAYGROUND_TRANSFORMERS);
+            onChange(markdown, 'markdown');
           });
         } else {
           editor.getEditorState().read(() => {

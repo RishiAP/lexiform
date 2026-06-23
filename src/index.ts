@@ -3,7 +3,12 @@ export { LexicalEditor } from './components/LexicalEditor';
 export type { LexicalEditorProps, EditorOutputFormat } from './types';
 
 // Export utility functions for SSR or separate handling
-export { lexicalJSONToHTML, htmlToLexicalJSON } from './utils/serializers';
+export { 
+  lexicalJSONToHTML, 
+  htmlToLexicalJSON,
+  lexicalJSONToMarkdown,
+  markdownToLexicalJSON
+} from './utils/serializers';
 
 // Export base theme if needed for overriding
 export { default as defaultTheme } from './themes/DefaultTheme';

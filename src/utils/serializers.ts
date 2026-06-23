@@ -3,6 +3,8 @@ import {$generateHtmlFromNodes, $generateNodesFromDOM} from '@lexical/html';
 import {$getRoot, $insertNodes} from 'lexical';
 import {editorNodes} from '../nodes/EditorNodes';
 import theme from '../themes/DefaultTheme';
+import {$convertToMarkdownString, $convertFromMarkdownString} from '@lexical/markdown';
+import {PLAYGROUND_TRANSFORMERS} from '../components/plugins/extended/MarkdownTransformers';
 
 /**
  * Converts Lexical JSON state string to an HTML string.
@@ -45,6 +47,43 @@ export function htmlToLexicalJSON(htmlString: string): string {
     const root = $getRoot();
     root.clear();
     $insertNodes(nodes);
+  });
+
+  return JSON.stringify(editor.getEditorState().toJSON());
+}
+
+/**
+ * Converts Lexical JSON state string to a Markdown string.
+ * This is safe to run on the server (Node.js) since it uses @lexical/headless.
+ */
+export function lexicalJSONToMarkdown(jsonString: string): string {
+  const editor = createHeadlessEditor({
+    nodes: editorNodes,
+    theme,
+  });
+  
+  editor.setEditorState(editor.parseEditorState(jsonString));
+  
+  let markdown = '';
+  editor.getEditorState().read(() => {
+    markdown = $convertToMarkdownString(PLAYGROUND_TRANSFORMERS);
+  });
+  
+  return markdown;
+}
+
+/**
+ * Converts a Markdown string to a Lexical JSON state string.
+ * This is safe to run on the server (Node.js) since it uses @lexical/headless.
+ */
+export function markdownToLexicalJSON(markdownString: string): string {
+  const editor = createHeadlessEditor({
+    nodes: editorNodes,
+    theme,
+  });
+
+  editor.update(() => {
+    $convertFromMarkdownString(markdownString, PLAYGROUND_TRANSFORMERS);
   });
 
   return JSON.stringify(editor.getEditorState().toJSON());
