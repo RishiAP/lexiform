@@ -7,8 +7,36 @@
  *
  */
 "use client";
-import {debounce} from 'lodash-es';
 import {useMemo, useRef} from 'react';
+
+function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  wait: number,
+  options?: { maxWait?: number }
+) {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  let maxWaitTimeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  return function (this: any, ...args: Parameters<T>) {
+    const context = this;
+
+    const invoke = () => {
+      timeoutId = undefined;
+      clearTimeout(maxWaitTimeoutId);
+      maxWaitTimeoutId = undefined;
+      func.apply(context, args);
+    };
+
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(invoke, wait);
+
+    if (options?.maxWait && maxWaitTimeoutId === undefined) {
+      maxWaitTimeoutId = setTimeout(invoke, options.maxWait);
+    }
+  };
+}
 
 export function useDebounce<T extends (...args: never[]) => void>(
   fn: T,

@@ -1,7 +1,7 @@
 {
   "name": "@rishiap/lexiform",
   "type": "module",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
@@ -60,7 +60,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "lexical": "^0.45.0",
     "@lexical/clipboard": "^0.45.0",
     "@lexical/code": "^0.45.0",
     "@lexical/file": "^0.45.0",
@@ -77,21 +76,27 @@
     "@lexical/selection": "^0.45.0",
     "@lexical/table": "^0.45.0",
     "@lexical/utils": "^0.45.0",
-    "lodash-es": "^4.17.21",
+    "lexical": "^0.45.0",
     "lucide-react": "^1.21.0",
     "radix-ui": "^1.0.0"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
     "@excalidraw/excalidraw": "*",
     "katex": "*",
-    "mathlive": "*"
+    "mathlive": "*",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "peerDependenciesMeta": {
-    "@excalidraw/excalidraw": { "optional": true },
-    "katex": { "optional": true },
-    "mathlive": { "optional": true }
+    "@excalidraw/excalidraw": {
+      "optional": true
+    },
+    "katex": {
+      "optional": true
+    },
+    "mathlive": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@excalidraw/excalidraw": "^0.18.1",
