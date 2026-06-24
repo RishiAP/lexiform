@@ -28,6 +28,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **JSON Serialization & Native Compression**: Below the editor, there is a live preview window showing the `onChange` value. Notice how the JSON is natively compressed, automatically stripping out empty defaults like `detail` and `version`!
 - **Multiple Output Formats**: Test how Lexiform seamlessly emits highly optimized JSON, raw HTML, or clean Markdown.
 - **Smart CSS Chunking**: Check `src/app/page.tsx` to see how you can optionally import just the CSS you need for complex plugins (e.g., Excalidraw, KaTeX) instead of a monolithic stylesheet.
+- **Testing Optional Plugins**: Because Lexiform marks large third-party plugins (like Excalidraw and KaTeX) as *optional* peer dependencies, they are explicitly installed as standard `dependencies` in this `demo/package.json` so they can be tested and showcased locally.
 
 ## Modifying the Demo
 

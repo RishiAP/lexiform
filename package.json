@@ -1,6 +1,7 @@
 {
   "name": "@rishiap/lexiform",
-  "version": "0.4.1",
+  "type": "module",
+  "version": "0.4.2",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
@@ -8,14 +9,14 @@
     "type": "git",
     "url": "https://github.com/RishiAP/lexiform"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./styles.css": "./dist/index.css"
   },
@@ -41,14 +42,12 @@
     "prepublishOnly": "npm run build",
     "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "@excalidraw/excalidraw": "^0.18.1",
+  "dependencies": {
+    "lexical": "^0.45.0",
     "@lexical/clipboard": "^0.45.0",
     "@lexical/code": "^0.45.0",
-    "@lexical/code-prism": "^0.45.0",
     "@lexical/file": "^0.45.0",
     "@lexical/hashtag": "^0.45.0",
-    "@lexical/headless": "^0.45.0",
     "@lexical/history": "^0.45.0",
     "@lexical/html": "^0.45.0",
     "@lexical/link": "^0.45.0",
@@ -61,33 +60,30 @@
     "@lexical/selection": "^0.45.0",
     "@lexical/table": "^0.45.0",
     "@lexical/utils": "^0.45.0",
-    "katex": "^0.17.0",
-    "lexical": "^0.45.0",
-    "mathlive": "^0.110.0",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": false
-    },
-    "react-dom": {
-      "optional": false
-    },
-    "@lexical/headless": {
-      "optional": true
-    }
-  },
-  "dependencies": {
+    "lodash-es": "^4.17.21",
     "lucide-react": "^1.21.0",
     "radix-ui": "^1.0.0"
   },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "@excalidraw/excalidraw": "*",
+    "katex": "*",
+    "mathlive": "*"
+  },
+  "peerDependenciesMeta": {
+    "@excalidraw/excalidraw": { "optional": true },
+    "katex": { "optional": true },
+    "mathlive": { "optional": true }
+  },
   "devDependencies": {
+    "@excalidraw/excalidraw": "^0.18.1",
     "@lexical/headless": "^0.45.0",
-    "@lexical/table": "^0.45.0",
     "@types/katex": "^0.16.8",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "katex": "^0.17.0",
+    "mathlive": "^0.110.0",
     "tsup": "^8.5.0",
     "typescript": "^6.0.3"
   }

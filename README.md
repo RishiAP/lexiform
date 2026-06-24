@@ -46,7 +46,19 @@ yarn add @rishiap/lexiform
 pnpm add @rishiap/lexiform
 ```
 
-> **Note**: Lexiform relies on modern React (`>=18.0.0`).
+> **Note**: Lexiform relies on modern React (`>=18.0.0`). The core editor automatically installs all necessary Lexical dependencies.
+
+### Optional Dependencies
+
+Some advanced plugins require large third-party libraries. To keep the base package lightweight, these are marked as optional peer dependencies. If you plan to use these specific plugins, install them separately:
+
+- **`ExcalidrawPlugin`**: requires `@excalidraw/excalidraw`
+- **`EquationsPlugin`**: requires `katex` and `mathlive`
+
+```bash
+# Example: If you want to use the Excalidraw whiteboard feature
+npm install @excalidraw/excalidraw
+```
 
 ## Usage
 
