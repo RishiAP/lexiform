@@ -76,6 +76,13 @@ export interface LexicalEditorProps {
    * Additional plugins to render inside the composer
    */
   plugins?: React.ReactNode;
+
+  /**
+   * Override or restrict the available languages in the code block dropdown.
+   * If provided, only these languages will be shown.
+   * Example: { "js": "JavaScript", "python": "Python", "rust": "Rust" }
+   */
+  codeLanguages?: Record<string, string>;
 }
 
 export type EditorOutputFormat = 'json' | 'html' | 'markdown';

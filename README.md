@@ -115,6 +115,35 @@ export default function MyEditor() {
 }
 ```
 
+## Custom Code Languages
+
+Lexiform lazily loads its syntax highlighters to keep your initial bundle tiny. By default, the code block dropdown offers a core set of common languages. You can easily restrict these or add entirely new languages (like Go, Ruby, Docker, etc.) using the `codeLanguages` prop and the `DEFAULT_CODE_LANGUAGES` export.
+
+```tsx
+import { LexicalEditor, DEFAULT_CODE_LANGUAGES } from '@rishiap/lexiform';
+
+// 1. Import any additional languages you want from PrismJS
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-docker';
+
+export default function MyEditor() {
+  return (
+    <LexicalEditor
+      // ...other props
+      codeLanguages={{
+        ...DEFAULT_CODE_LANGUAGES, // Spread the built-in defaults
+        go: 'Go',                  // Add your custom languages!
+        ruby: 'Ruby',
+        docker: 'Docker',
+      }}
+    />
+  );
+}
+```
+
+If you ever want to strictly restrict the editor to a subset of languages (e.g., only JavaScript and Python), simply don't spread the defaults!
+
 ## Theming & Dark Mode
 
 Lexiform is built to be a team player. Its internal variables automatically look for standard Shadcn UI variables (`--background`, `--foreground`, `--primary`, etc.).

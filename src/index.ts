@@ -1,6 +1,7 @@
 // Export main component and types
 export { LexicalEditor } from './components/LexicalEditor';
 export type { LexicalEditorProps, EditorOutputFormat } from './types';
+export { DEFAULT_CODE_LANGUAGES } from './components/Toolbar/ToolbarPlugin';
 
 
 

@@ -4,12 +4,15 @@ import dynamic from 'next/dynamic';
 import '@rishiap/lexiform/styles.css';
 import '@rishiap/lexiform/equations.css';
 import '@rishiap/lexiform/excalidraw.css';
-import { ExtendedNodes, ComponentPickerPlugin, ImagesPlugin, LayoutPlugin, PollPlugin, YouTubePlugin, TwitterPlugin, FigmaPlugin, CollapsiblePlugin } from '@rishiap/lexiform';
+import { ExtendedNodes, ComponentPickerPlugin, ImagesPlugin, LayoutPlugin, PollPlugin, YouTubePlugin, TwitterPlugin, FigmaPlugin, CollapsiblePlugin, DEFAULT_CODE_LANGUAGES } from '@rishiap/lexiform';
 import { EquationsPlugin } from '@rishiap/lexiform/equations';
 import { ExcalidrawPlugin } from '@rishiap/lexiform/excalidraw';
 import { useState } from 'react';
 import { Sun, Moon, Copy, Check } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-docker';
 
 const LexicalEditor = dynamic(
   () => import('@rishiap/lexiform').then((mod) => mod.LexicalEditor),
@@ -96,6 +99,12 @@ export default function Home() {
             outputFormat="json"
             placeholder="Start typing..."
             nodes={ExtendedNodes}
+            codeLanguages={{
+              ...DEFAULT_CODE_LANGUAGES,
+              go: 'Go',
+              ruby: 'Ruby',
+              docker: 'Docker',
+            }}
             plugins={
               <>
                 <ComponentPickerPlugin />

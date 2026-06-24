@@ -22,9 +22,14 @@ import {OnChangePlugin} from './plugins/OnChangePlugin';
 import {ControlledValuePlugin} from './plugins/ControlledValuePlugin';
 import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
 import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
-import {CodeHighlightPlugin} from './plugins/CodeHighlightPlugin';
 import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
-import {useState, useCallback} from 'react';
+import {useState, useCallback, lazy, Suspense} from 'react';
+
+const CodeHighlightPlugin = lazy(() =>
+  import('./plugins/CodeHighlightPlugin').then((module) => ({
+    default: module.CodeHighlightPlugin,
+  })),
+);
 import EmojiPickerPlugin from './plugins/extended/EmojiPickerPlugin';
 import TableActionMenuPlugin from './plugins/extended/TableActionMenuPlugin';
 import TableHoverActionsPlugin from './plugins/extended/TableHoverActionsPlugin';
@@ -63,6 +68,7 @@ export function LexicalEditor({
   autoFocus = false,
   nodes,
   plugins,
+  codeLanguages,
 }: LexicalEditorProps) {
   const initialConfig = {
     namespace: 'LexiformEditor',
@@ -87,6 +93,7 @@ export function LexicalEditor({
             value={value}
             onChange={onChange}
             outputFormat={outputFormat}
+            codeLanguages={codeLanguages}
           />
         </ToolbarContext>
       </SharedHistoryContext>
@@ -108,6 +115,7 @@ function EditorShell({
   value,
   onChange,
   outputFormat,
+  codeLanguages,
 }: {
   placeholder: string;
   autoFocus: boolean;
@@ -117,6 +125,7 @@ function EditorShell({
   value?: string;
   onChange?: (value: string) => void;
   outputFormat: 'json' | 'html' | 'markdown';
+  codeLanguages?: Record<string, string>;
 }) {
   const [editor] = useLexicalComposerContext();
   const [activeEditor, setActiveEditor] = useState(editor);
@@ -136,6 +145,7 @@ function EditorShell({
         activeEditor={activeEditor}
         setActiveEditor={setActiveEditor}
         setIsLinkEditMode={setIsLinkEditMode}
+        codeLanguages={codeLanguages}
       />
 
       <div className="Lexiform__editorInner">
@@ -161,7 +171,9 @@ function EditorShell({
         <AutoLinkPlugin matchers={MATCHERS} />
         <HorizontalRulePlugin />
         <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-        <CodeHighlightPlugin />
+        <Suspense fallback={null}>
+          <CodeHighlightPlugin />
+        </Suspense>
 
         {/* Table plugins - injected internally for full table support */}
         <TablePlugin hasCellMerge={true} hasCellBackgroundColor={true} />

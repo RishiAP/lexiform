@@ -234,6 +234,8 @@
   min-width: 180px;
   z-index: 1000;
   border: 1px solid var(--lexiform-border);
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .Lexiform__dropdownContent * {
