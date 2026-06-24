@@ -2,7 +2,11 @@
 
 import dynamic from 'next/dynamic';
 import '@rishiap/lexiform/styles.css';
-import { ExtendedNodes, ComponentPickerPlugin, EquationsPlugin, ExcalidrawPlugin, ImagesPlugin, LayoutPlugin, PollPlugin, YouTubePlugin, TwitterPlugin, FigmaPlugin, CollapsiblePlugin } from '@rishiap/lexiform';
+import '@rishiap/lexiform/equations.css';
+import '@rishiap/lexiform/excalidraw.css';
+import { ExtendedNodes, ComponentPickerPlugin, ImagesPlugin, LayoutPlugin, PollPlugin, YouTubePlugin, TwitterPlugin, FigmaPlugin, CollapsiblePlugin } from '@rishiap/lexiform';
+import { EquationsPlugin } from '@rishiap/lexiform/equations';
+import { ExcalidrawPlugin } from '@rishiap/lexiform/excalidraw';
 import { useState } from 'react';
 import { Sun, Moon, Copy, Check } from 'lucide-react';
 import { useTheme } from 'next-themes';

@@ -12,8 +12,6 @@ export { default as ExtendedNodes } from './nodes/extended/PlaygroundNodes';
 
 // Export extended plugins
 export { default as ComponentPickerPlugin } from './components/plugins/extended/ComponentPickerPlugin';
-export { default as EquationsPlugin } from './components/plugins/extended/EquationsPlugin';
-export { default as ExcalidrawPlugin } from './components/plugins/extended/ExcalidrawPlugin';
 export { default as ImagesPlugin } from './components/plugins/extended/ImagesPlugin';
 export { LayoutPlugin } from './components/plugins/extended/LayoutPlugin/LayoutPlugin';
 export { default as PollPlugin } from './components/plugins/extended/PollPlugin';

@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.ts', 'src/server.ts'],
+  entry: ['src/index.ts', 'src/server.ts', 'src/excalidraw.ts', 'src/equations.ts'],
   format: ['esm', 'cjs'],
   target: 'es2022',
   dts: true,

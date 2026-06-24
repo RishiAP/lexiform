@@ -55,9 +55,18 @@ Some advanced plugins require large third-party libraries. To keep the base pack
 - **`ExcalidrawPlugin`**: requires `@excalidraw/excalidraw`
 - **`EquationsPlugin`**: requires `katex` and `mathlive`
 
-```bash
-# Example: If you want to use the Excalidraw whiteboard feature
-npm install @excalidraw/excalidraw
+Because these plugins are huge, they are **decoupled from the main bundle**. If you want to use them, install their peer dependencies and import them from their dedicated subpaths:
+
+```tsx
+// 1. Install the peer dependency
+// npm install @excalidraw/excalidraw
+
+// 2. Import from the subpath (both JS and styles)
+import { ExcalidrawPlugin } from '@rishiap/lexiform/excalidraw';
+import '@rishiap/lexiform/excalidraw.css';
+
+import { EquationsPlugin } from '@rishiap/lexiform/equations';
+import '@rishiap/lexiform/equations.css';
 ```
 
 ## Usage

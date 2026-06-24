@@ -1,7 +1,7 @@
 {
   "name": "@rishiap/lexiform",
   "type": "module",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
@@ -23,7 +23,19 @@
       "import": "./dist/server.js",
       "require": "./dist/server.cjs"
     },
-    "./styles.css": "./dist/index.css"
+    "./excalidraw": {
+      "types": "./dist/excalidraw.d.ts",
+      "import": "./dist/excalidraw.js",
+      "require": "./dist/excalidraw.cjs"
+    },
+    "./equations": {
+      "types": "./dist/equations.d.ts",
+      "import": "./dist/equations.js",
+      "require": "./dist/equations.cjs"
+    },
+    "./styles.css": "./dist/index.css",
+    "./excalidraw.css": "./dist/excalidraw.css",
+    "./equations.css": "./dist/equations.css"
   },
   "files": [
     "dist",
