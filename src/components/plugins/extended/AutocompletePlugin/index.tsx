@@ -14,7 +14,6 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$isAtNodeEnd} from '@lexical/selection';
 import {mergeRegister} from '@lexical/utils';
 import {
-  $addUpdateTag,
   $createTextNode,
   $getNodeByKey,
   $getSelection,
@@ -23,8 +22,8 @@ import {
   $setSelection,
   COMMAND_PRIORITY_LOW,
   KEY_ARROW_RIGHT_COMMAND,
-  KEY_TAB_COMMAND,
 } from 'lexical';
+import * as Lexical from 'lexical';
 import {useCallback, useEffect} from 'react';
 
 import {useToolbarState} from '../../../../contexts/ToolbarContext';
@@ -220,7 +219,7 @@ export default function AutocompletePlugin(): JSX.Element | null {
         if ($handleAutocompleteIntent()) {
           e.preventDefault();
         } else {
-          $addUpdateTag(HISTORY_MERGE.tag);
+          Lexical.$addUpdateTag(HISTORY_MERGE.tag);
         }
       });
     }
@@ -239,7 +238,7 @@ export default function AutocompletePlugin(): JSX.Element | null {
       ),
       editor.registerUpdateListener(handleUpdate),
       editor.registerCommand(
-        KEY_TAB_COMMAND,
+        Lexical.KEY_TAB_COMMAND,
         $handleKeypressCommand,
         COMMAND_PRIORITY_LOW,
       ),

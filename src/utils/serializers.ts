@@ -1,4 +1,4 @@
-import {createHeadlessEditor} from '@lexical/headless';
+import * as LexicalHeadless from '@lexical/headless';
 import {$generateHtmlFromNodes, $generateNodesFromDOM} from '@lexical/html';
 import {$getRoot, $insertNodes} from 'lexical';
 import {editorNodes} from '../nodes/EditorNodes';
@@ -11,7 +11,7 @@ import {PLAYGROUND_TRANSFORMERS} from '../components/plugins/extended/MarkdownTr
  * This is safe to run on the server (Node.js) since it uses @lexical/headless.
  */
 export function lexicalJSONToHTML(jsonString: string): string {
-  const editor = createHeadlessEditor({
+  const editor = LexicalHeadless.createHeadlessEditor({
     nodes: editorNodes,
     theme,
   });
@@ -33,7 +33,7 @@ export function lexicalJSONToHTML(jsonString: string): string {
  * it's either run in the browser or an environment with a polyfilled DOM.
  */
 export function htmlToLexicalJSON(htmlString: string): string {
-  const editor = createHeadlessEditor({
+  const editor = LexicalHeadless.createHeadlessEditor({
     nodes: editorNodes,
     theme,
   });
@@ -57,7 +57,7 @@ export function htmlToLexicalJSON(htmlString: string): string {
  * This is safe to run on the server (Node.js) since it uses @lexical/headless.
  */
 export function lexicalJSONToMarkdown(jsonString: string): string {
-  const editor = createHeadlessEditor({
+  const editor = LexicalHeadless.createHeadlessEditor({
     nodes: editorNodes,
     theme,
   });
@@ -77,7 +77,7 @@ export function lexicalJSONToMarkdown(jsonString: string): string {
  * This is safe to run on the server (Node.js) since it uses @lexical/headless.
  */
 export function markdownToLexicalJSON(markdownString: string): string {
-  const editor = createHeadlessEditor({
+  const editor = LexicalHeadless.createHeadlessEditor({
     nodes: editorNodes,
     theme,
   });

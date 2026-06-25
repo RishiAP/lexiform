@@ -10,6 +10,7 @@ It abstracts away the complexity of Lexical's architecture and provides a stunni
 ## Features
 
 - **Ultra Lightweight**: Fully featured editor bundle that stays under 100KB (minified and gzipped) by utilizing smart code-splitting (e.g. dynamically lazy-loading a 350KB emoji list).
+- **Next.js 15+ & Turbopack Ready**: Fully compatible with the modern Next.js App Router, strict ESM resolution, and Turbopack's static analyzers (zero module warnings).
 - **Drop-in `<LexicalEditor />` Component**: Start using a rich text editor instantly.
 - **Beautiful UI**: Polished toolbar with vanilla CSS combined with robust Radix UI primitives.
 - **Native Shadcn & Tailwind Compatibility**: Inherits global CSS variables and natively supports standard `.dark` and `.light` theme classes, syncing perfectly with `next-themes`.
