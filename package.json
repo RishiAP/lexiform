@@ -1,7 +1,7 @@
 {
   "name": "@rishiap/lexiform",
   "type": "module",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
@@ -18,10 +18,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./server": {
-      "types": "./dist/server.d.ts",
-      "import": "./dist/server.js",
-      "require": "./dist/server.cjs"
+    "./headless": {
+      "types": "./dist/headless.d.ts",
+      "import": "./dist/headless.js",
+      "require": "./dist/headless.cjs"
     },
     "./excalidraw": {
       "types": "./dist/excalidraw.d.ts",

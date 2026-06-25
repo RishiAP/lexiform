@@ -163,7 +163,7 @@ import {
   htmlToLexicalJSON,
   lexicalJSONToMarkdown,
   markdownToLexicalJSON
-} from '@rishiap/lexiform/server';
+} from '@rishiap/lexiform/headless';
 
 // Generate HTML from JSON
 const htmlString = lexicalJSONToHTML(lexicalJsonString);

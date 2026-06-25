@@ -54,7 +54,7 @@ export default defineConfig([
   },
   {
     ...commonConfig,
-    entry: ['src/server.ts'],
+    entry: ['src/headless.ts'],
     clean: false,
   }
 ]);
