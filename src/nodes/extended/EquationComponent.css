@@ -2,17 +2,15 @@
   display: inline-block;
   min-width: 20px;
   min-height: 20px;
-  background-color: var(--lexiform-gray-50, #f9fafb);
-  border: 1px solid var(--lexiform-gray-200, #e5e7eb);
   border-radius: 4px;
   padding: 2px 4px;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
+  color: inherit;
 }
 
 .EquationComponent__container:hover {
   background-color: var(--lexiform-gray-100, #f3f4f6);
-  border-color: var(--lexiform-gray-300, #d1d5db);
 }
 
 .EquationComponent__container--block {
@@ -20,4 +18,12 @@
   text-align: center;
   padding: 8px;
   margin: 8px 0;
+}
+
+.lexiform-dark .EquationComponent__container:hover {
+  background-color: var(--lexiform-gray-800, #1f2937);
+}
+
+.lexiform-dark .EquationComponent__container .katex {
+  color: var(--lexiform-gray-50, #f9fafb);
 }
