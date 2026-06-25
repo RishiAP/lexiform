@@ -353,7 +353,7 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
       return baseOptions;
     }
 
-    const regex = new RegExp(queryString, 'i');
+    const regex = new RegExp('\\b' + queryString, 'i');
 
     return [
       ...getDynamicOptions(editor, queryString),
