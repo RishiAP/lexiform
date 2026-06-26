@@ -31,7 +31,7 @@ export default defineConfig([
   {
     ...commonConfig,
     entry: ['src/index.ts', 'src/excalidraw.ts', 'src/equations.ts'],
-    clean: true,
+    clean: false,
     async onSuccess() {
       try {
         await fs.copyFile('dist/index.css', 'dist/styles.css');

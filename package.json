@@ -1,7 +1,7 @@
 {
   "name": "@rishiap/lexiform",
   "type": "module",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
@@ -38,6 +38,13 @@
     "./excalidraw.css": "./dist/excalidraw.css",
     "./equations.css": "./dist/equations.css"
   },
+  "typesVersions": {
+    "*": {
+      "headless": ["dist/headless.d.ts"],
+      "excalidraw": ["dist/excalidraw.d.ts"],
+      "equations": ["dist/equations.d.ts"]
+    }
+  },
   "files": [
     "dist",
     "README.md"
@@ -57,7 +64,7 @@
     "radix-ui"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "rm -rf dist && tsup",
     "dev": "tsup --watch",
     "demo": "cd demo && npm run dev",
     "prepublishOnly": "npm run build",
