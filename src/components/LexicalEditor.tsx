@@ -23,6 +23,7 @@ import {ControlledValuePlugin} from './plugins/ControlledValuePlugin';
 import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
 import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
 import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
+import {AlwaysAppendParagraphPlugin} from './plugins/AlwaysAppendParagraphPlugin';
 import {useState, useCallback, lazy, Suspense} from 'react';
 
 const CodeHighlightPlugin = lazy(() =>
@@ -201,6 +202,7 @@ function EditorShell({
         {onChange && (
           <OnChangePlugin onChange={onChange} outputFormat={outputFormat} />
         )}
+        <AlwaysAppendParagraphPlugin />
       </div>
     </div>
   );
