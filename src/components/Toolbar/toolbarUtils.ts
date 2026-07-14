@@ -16,7 +16,9 @@ import {$patchStyleText, $setBlocksType} from '@lexical/selection';
 import {$getNearestBlockElementAncestorOrThrow} from '@lexical/utils';
 import {
   $createParagraphNode,
+  $getRoot,
   $getSelection,
+  $isParagraphNode,
   $isRangeSelection,
   $isTextNode,
   LexicalEditor,
@@ -142,6 +144,27 @@ export const formatParagraph = (editor: LexicalEditor) => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
       $setBlocksType(selection, () => $createParagraphNode());
+
+      // Clean up trailing empty paragraphs that were added by
+      // AlwaysAppendParagraphPlugin when the block was a non-paragraph type.
+      // We re-read the selection after $setBlocksType since it updates
+      // the selection to point to the newly created paragraph node.
+      const newSelection = $getSelection();
+      if ($isRangeSelection(newSelection)) {
+        const currentNode = newSelection.anchor.getNode().getTopLevelElement();
+        if (currentNode !== null) {
+          let nextSibling = currentNode.getNextSibling();
+          while (
+            nextSibling !== null &&
+            $isParagraphNode(nextSibling) &&
+            nextSibling.getTextContentSize() === 0
+          ) {
+            const toRemove = nextSibling;
+            nextSibling = nextSibling.getNextSibling();
+            toRemove.remove();
+          }
+        }
+      }
     }
   });
 };
