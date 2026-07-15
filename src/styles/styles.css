@@ -140,6 +140,8 @@
 
 .Lexiform__editor {
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .LexiformContentEditable__root {
@@ -148,6 +150,8 @@
   font-size: 15px;
   outline: none;
   padding-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .LexiformContentEditable__placeholder {

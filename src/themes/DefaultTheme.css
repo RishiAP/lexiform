@@ -173,6 +173,8 @@
   overflow-x: auto;
   position: relative;
   tab-size: 2;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .LexiformTheme__code:before {
   content: attr(data-gutter);
