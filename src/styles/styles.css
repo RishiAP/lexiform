@@ -120,6 +120,10 @@
 .Lexiform__editorInner {
   position: relative;
   flex-grow: 1;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .Lexiform__editorScroller {
@@ -127,6 +131,7 @@
   max-height: 600px;
   overflow: auto;
   padding: 15px;
+  width: 100%;
 }
 
 .Lexiform__editor {
