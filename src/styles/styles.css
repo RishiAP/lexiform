@@ -172,6 +172,8 @@
   background: var(--lexiform-muted);
   border-bottom: 1px solid var(--lexiform-border);
   gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .Lexiform__toolbarDivider {
