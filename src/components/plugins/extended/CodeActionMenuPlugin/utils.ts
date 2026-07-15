@@ -17,7 +17,7 @@ function debounce<T extends (...args: any[]) => void>(
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
   let maxWaitTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
-  return function (this: any, ...args: Parameters<T>) {
+  const debounced = function (this: any, ...args: Parameters<T>) {
     const context = this;
 
     const invoke = () => {
@@ -36,6 +36,19 @@ function debounce<T extends (...args: any[]) => void>(
       maxWaitTimeoutId = setTimeout(invoke, options.maxWait);
     }
   };
+
+  debounced.cancel = () => {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+      timeoutId = undefined;
+    }
+    if (maxWaitTimeoutId !== undefined) {
+      clearTimeout(maxWaitTimeoutId);
+      maxWaitTimeoutId = undefined;
+    }
+  };
+
+  return debounced;
 }
 
 export function useDebounce<T extends (...args: never[]) => void>(

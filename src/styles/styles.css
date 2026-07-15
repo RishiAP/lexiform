@@ -1,26 +1,26 @@
 @import '../themes/DefaultTheme.css';
 
 :root {
-  --lexiform-background: #ffffff;
-  --lexiform-foreground: #09090b;
-  --lexiform-card: #ffffff;
-  --lexiform-card-foreground: #09090b;
-  --lexiform-popover: #ffffff;
-  --lexiform-popover-foreground: #09090b;
-  --lexiform-primary: #18181b;
-  --lexiform-primary-foreground: #fafafa;
-  --lexiform-secondary: #f4f4f5;
-  --lexiform-secondary-foreground: #18181b;
-  --lexiform-muted: #f4f4f5;
-  --lexiform-muted-foreground: #71717a;
-  --lexiform-accent: #f4f4f5;
-  --lexiform-accent-foreground: #18181b;
-  --lexiform-destructive: #ef4444;
-  --lexiform-destructive-foreground: #fafafa;
-  --lexiform-border: #e4e4e7;
-  --lexiform-input: #e4e4e7;
-  --lexiform-ring: #18181b;
-  --lexiform-radius: 0.5rem;
+  --lexiform-background: var(--background, #ffffff);
+  --lexiform-foreground: var(--foreground, #09090b);
+  --lexiform-card: var(--card, #ffffff);
+  --lexiform-card-foreground: var(--card-foreground, #09090b);
+  --lexiform-popover: var(--popover, #ffffff);
+  --lexiform-popover-foreground: var(--popover-foreground, #09090b);
+  --lexiform-primary: var(--primary, #18181b);
+  --lexiform-primary-foreground: var(--primary-foreground, #fafafa);
+  --lexiform-secondary: var(--secondary, #f4f4f5);
+  --lexiform-secondary-foreground: var(--secondary-foreground, #18181b);
+  --lexiform-muted: var(--muted, #f4f4f5);
+  --lexiform-muted-foreground: var(--muted-foreground, #71717a);
+  --lexiform-accent: var(--accent, #f4f4f5);
+  --lexiform-accent-foreground: var(--accent-foreground, #18181b);
+  --lexiform-destructive: var(--destructive, #ef4444);
+  --lexiform-destructive-foreground: var(--destructive-foreground, #fafafa);
+  --lexiform-border: var(--border, #e4e4e7);
+  --lexiform-input: var(--input, #e4e4e7);
+  --lexiform-ring: var(--ring, #18181b);
+  --lexiform-radius: var(--radius, 0.5rem);
 
   --lexiform-code-bg: #f4f4f5;
   --lexiform-code-border: #e4e4e7;
@@ -36,25 +36,25 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.lexiform-light):not(.light) {
-    --lexiform-background: #09090b;
-    --lexiform-foreground: #fafafa;
-    --lexiform-card: #09090b;
-    --lexiform-card-foreground: #fafafa;
-    --lexiform-popover: #09090b;
-    --lexiform-popover-foreground: #fafafa;
-    --lexiform-primary: #fafafa;
-    --lexiform-primary-foreground: #18181b;
-    --lexiform-secondary: #27272a;
-    --lexiform-secondary-foreground: #fafafa;
-    --lexiform-muted: #27272a;
-    --lexiform-muted-foreground: #a1a1aa;
-    --lexiform-accent: #27272a;
-    --lexiform-accent-foreground: #fafafa;
-    --lexiform-destructive: #7f1d1d;
-    --lexiform-destructive-foreground: #fafafa;
-    --lexiform-border: #27272a;
-    --lexiform-input: #27272a;
-    --lexiform-ring: #d4d4d8;
+    --lexiform-background: var(--background, #09090b);
+    --lexiform-foreground: var(--foreground, #fafafa);
+    --lexiform-card: var(--card, #09090b);
+    --lexiform-card-foreground: var(--card-foreground, #fafafa);
+    --lexiform-popover: var(--popover, #09090b);
+    --lexiform-popover-foreground: var(--popover-foreground, #fafafa);
+    --lexiform-primary: var(--primary, #fafafa);
+    --lexiform-primary-foreground: var(--primary-foreground, #18181b);
+    --lexiform-secondary: var(--secondary, #27272a);
+    --lexiform-secondary-foreground: var(--secondary-foreground, #fafafa);
+    --lexiform-muted: var(--muted, #27272a);
+    --lexiform-muted-foreground: var(--muted-foreground, #a1a1aa);
+    --lexiform-accent: var(--accent, #27272a);
+    --lexiform-accent-foreground: var(--accent-foreground, #fafafa);
+    --lexiform-destructive: var(--destructive, #7f1d1d);
+    --lexiform-destructive-foreground: var(--destructive-foreground, #fafafa);
+    --lexiform-border: var(--border, #27272a);
+    --lexiform-input: var(--input, #27272a);
+    --lexiform-ring: var(--ring, #d4d4d8);
 
     --lexiform-code-bg: #27272a;
     --lexiform-code-border: #3f3f46;
@@ -70,25 +70,25 @@
 }
 
 :root.lexiform-dark, .lexiform-dark, :root.dark, .dark {
-  --lexiform-background: #09090b;
-  --lexiform-foreground: #fafafa;
-  --lexiform-card: #09090b;
-  --lexiform-card-foreground: #fafafa;
-  --lexiform-popover: #09090b;
-  --lexiform-popover-foreground: #fafafa;
-  --lexiform-primary: #fafafa;
-  --lexiform-primary-foreground: #18181b;
-  --lexiform-secondary: #27272a;
-  --lexiform-secondary-foreground: #fafafa;
-  --lexiform-muted: #27272a;
-  --lexiform-muted-foreground: #a1a1aa;
-  --lexiform-accent: #27272a;
-  --lexiform-accent-foreground: #fafafa;
-  --lexiform-destructive: #7f1d1d;
-  --lexiform-destructive-foreground: #fafafa;
-  --lexiform-border: #27272a;
-  --lexiform-input: #27272a;
-  --lexiform-ring: #d4d4d8;
+  --lexiform-background: var(--background, #09090b);
+  --lexiform-foreground: var(--foreground, #fafafa);
+  --lexiform-card: var(--card, #09090b);
+  --lexiform-card-foreground: var(--card-foreground, #fafafa);
+  --lexiform-popover: var(--popover, #09090b);
+  --lexiform-popover-foreground: var(--popover-foreground, #fafafa);
+  --lexiform-primary: var(--primary, #fafafa);
+  --lexiform-primary-foreground: var(--primary-foreground, #18181b);
+  --lexiform-secondary: var(--secondary, #27272a);
+  --lexiform-secondary-foreground: var(--secondary-foreground, #fafafa);
+  --lexiform-muted: var(--muted, #27272a);
+  --lexiform-muted-foreground: var(--muted-foreground, #a1a1aa);
+  --lexiform-accent: var(--accent, #27272a);
+  --lexiform-accent-foreground: var(--accent-foreground, #fafafa);
+  --lexiform-destructive: var(--destructive, #7f1d1d);
+  --lexiform-destructive-foreground: var(--destructive-foreground, #fafafa);
+  --lexiform-border: var(--border, #27272a);
+  --lexiform-input: var(--input, #27272a);
+  --lexiform-ring: var(--ring, #d4d4d8);
 
   --lexiform-code-bg: #27272a;
   --lexiform-code-border: #3f3f46;

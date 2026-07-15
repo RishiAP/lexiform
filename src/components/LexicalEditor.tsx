@@ -35,6 +35,7 @@ import EmojiPickerPlugin from './plugins/extended/EmojiPickerPlugin';
 import TableActionMenuPlugin from './plugins/extended/TableActionMenuPlugin';
 import TableHoverActionsPlugin from './plugins/extended/TableHoverActionsPlugin';
 import TableCellResizerPlugin from './plugins/extended/TableCellResizer';
+import {ListBackspaceFixPlugin} from './plugins/extended/ListBackspaceFixPlugin';
 import {LexicalContentEditable} from '../ui/ContentEditable';
 import {editorNodes} from '../nodes/EditorNodes';
 import theme from '../themes/DefaultTheme';
@@ -164,6 +165,7 @@ function EditorShell({
         <HistoryPlugin />
         {autoFocus && <AutoFocusPlugin />}
         <ListPlugin />
+        <ListBackspaceFixPlugin />
         <CheckListPlugin />
         <TabIndentationPlugin />
         <ClearEditorPlugin />

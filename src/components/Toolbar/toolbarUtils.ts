@@ -21,6 +21,7 @@ import {
   $isParagraphNode,
   $isRangeSelection,
   $isTextNode,
+  $isElementNode,
   LexicalEditor,
 } from 'lexical';
 
@@ -184,8 +185,29 @@ export const formatHeading = (
   }
 };
 
+const sanitizeIndent = (editor: LexicalEditor) => {
+  editor.update(() => {
+    const selection = $getSelection();
+    if ($isRangeSelection(selection)) {
+      selection.getNodes().forEach((node) => {
+        let current = node;
+        while (current !== null) {
+          if ($isElementNode(current)) {
+            const indent = current.getIndent();
+            if (typeof indent !== 'number' || Number.isNaN(indent)) {
+              current.setIndent(0);
+            }
+          }
+          current = current.getParent();
+        }
+      });
+    }
+  }, {tag: 'history-merge'});
+};
+
 export const formatBulletList = (editor: LexicalEditor, blockType: string) => {
   if (blockType !== 'bullet') {
+    sanitizeIndent(editor);
     editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
   } else {
     formatParagraph(editor);
@@ -194,6 +216,7 @@ export const formatBulletList = (editor: LexicalEditor, blockType: string) => {
 
 export const formatCheckList = (editor: LexicalEditor, blockType: string) => {
   if (blockType !== 'check') {
+    sanitizeIndent(editor);
     editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
   } else {
     formatParagraph(editor);
@@ -205,6 +228,7 @@ export const formatNumberedList = (
   blockType: string,
 ) => {
   if (blockType !== 'number') {
+    sanitizeIndent(editor);
     editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
   } else {
     formatParagraph(editor);

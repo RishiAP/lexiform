@@ -34,7 +34,17 @@ function PortalImpl({
 
   useEffect(() => {
     if (modalRef.current !== null) {
-      modalRef.current.focus();
+      setTimeout(() => {
+        if (modalRef.current !== null) {
+          // Auto-focus the first input element in the modal if it exists
+          const firstInput = modalRef.current.querySelector('input, textarea, select') as HTMLElement | null;
+          if (firstInput) {
+            firstInput.focus();
+          } else {
+            modalRef.current.focus();
+          }
+        }
+      }, 10);
     }
   }, []);
 
@@ -43,6 +53,21 @@ function PortalImpl({
     const handler = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
+      } else if (event.key === 'Enter') {
+        // Automatically submit the modal when Enter is pressed inside an input
+        if (document.activeElement instanceof HTMLInputElement) {
+          const buttons = Array.from(modalRef.current?.querySelectorAll('button') || []);
+          const confirmBtn = buttons.find(b => 
+            b.textContent?.trim() === 'Confirm' || 
+            b.textContent?.trim() === 'Insert'
+          ) as HTMLButtonElement | undefined;
+          
+          if (confirmBtn && !confirmBtn.disabled) {
+            confirmBtn.click();
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }
       }
     };
     const clickOutsideHandler = (event: MouseEvent) => {
