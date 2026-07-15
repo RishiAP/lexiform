@@ -129,9 +129,13 @@
 .Lexiform__editorScroller {
   min-height: 150px;
   max-height: 600px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 15px;
   width: 100%;
+  /* Reserve scrollbar gutter permanently so its appearance
+     doesn't shift the layout width when content grows */
+  scrollbar-gutter: stable;
 }
 
 .Lexiform__editor {
