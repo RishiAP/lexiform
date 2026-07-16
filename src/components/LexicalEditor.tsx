@@ -1,4 +1,5 @@
 import '../styles/styles.css';
+import {DRAGOVER_COMMAND, DROP_COMMAND} from 'lexical';
 
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
@@ -155,7 +156,15 @@ function EditorShell({
       <div className="Lexiform__editorInner">
         <RichTextPlugin
           contentEditable={
-            <div className="Lexiform__editorScroller">
+            <div
+              className="Lexiform__editorScroller"
+              onDragOver={(e) => {
+                editor.dispatchCommand(DRAGOVER_COMMAND, e.nativeEvent);
+              }}
+              onDrop={(e) => {
+                editor.dispatchCommand(DROP_COMMAND, e.nativeEvent);
+              }}
+            >
               <div className="Lexiform__editor" ref={onRef}>
                 <LexicalContentEditable placeholder={placeholder} />
               </div>
