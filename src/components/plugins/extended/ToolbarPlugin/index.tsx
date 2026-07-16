@@ -56,6 +56,7 @@ import {
 } from 'lexical';
 import {Dispatch, useCallback, useEffect, useState} from 'react';
 import * as React from 'react';
+import { Type, PaintBucket, Baseline } from 'lucide-react';
 
 import {
   blockTypeToBlockName,
@@ -325,8 +326,8 @@ function FontDropDown({
       disabled={disabled}
       buttonClassName={'toolbar-item ' + style}
       buttonLabel={value}
-      buttonIconClassName={
-        style === 'font-family' ? 'icon block-type font-family' : ''
+      buttonIcon={
+        style === 'font-family' ? <Type size={16} /> : undefined
       }
       buttonAriaLabel={buttonAriaLabel}>
       {(style === 'font-family' ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS).map(
@@ -566,14 +567,14 @@ export default function ToolbarPlugin({
       // Handle buttons
       updateToolbarState(
         'fontColor',
-        $getSelectionStyleValueForProperty(selection, 'color', '#000'),
+        $getSelectionStyleValueForProperty(selection, 'color', ''),
       );
       updateToolbarState(
         'bgColor',
         $getSelectionStyleValueForProperty(
           selection,
           'background-color',
-          '#fff',
+          '',
         ),
       );
       updateToolbarState(
@@ -872,7 +873,7 @@ export default function ToolbarPlugin({
             disabled={!isEditable}
             buttonClassName="toolbar-item color-picker"
             buttonAriaLabel="Formatting text color"
-            buttonIconClassName="icon font-color"
+            buttonIcon={<Baseline size={16} />}
             color={toolbarState.fontColor}
             onChange={onFontColorSelect}
             title="text color"
@@ -881,7 +882,7 @@ export default function ToolbarPlugin({
             disabled={!isEditable}
             buttonClassName="toolbar-item color-picker"
             buttonAriaLabel="Formatting background color"
-            buttonIconClassName="icon bg-color"
+            buttonIcon={<PaintBucket size={16} />}
             color={toolbarState.bgColor}
             onChange={onBgColorSelect}
             title="bg color"

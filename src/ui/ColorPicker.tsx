@@ -74,7 +74,8 @@ function clamp(value: number, max: number, min: number) {
 
 function MoveWrapper({ className, style, onChange, children }: { className?: string, style?: React.CSSProperties, onChange: (pos: Position) => void, children: React.ReactNode }) {
   const divRef = useRef<HTMLDivElement>(null);
-  
+  const draggedRef = useRef(false);
+
   const move = (e: React.MouseEvent | MouseEvent) => {
     if (divRef.current) {
       const { width, height, left, top } = divRef.current.getBoundingClientRect();
@@ -87,12 +88,28 @@ function MoveWrapper({ className, style, onChange, children }: { className?: str
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return;
+    e.preventDefault();
     move(e);
-    const onMouseMove = (_e: MouseEvent) => move(_e);
+    const onMouseMove = (_e: MouseEvent) => {
+      _e.preventDefault();
+      draggedRef.current = true;
+      move(_e);
+    };
     const onMouseUp = (_e: MouseEvent) => {
+      if (draggedRef.current) {
+        const captureClick = (clickEvent: MouseEvent) => {
+          clickEvent.stopPropagation();
+          document.removeEventListener('click', captureClick, true);
+        };
+        document.addEventListener('click', captureClick, true);
+        setTimeout(() => {
+          document.removeEventListener('click', captureClick, true);
+        }, 0);
+      }
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       move(_e);
+      draggedRef.current = false;
     };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -120,7 +137,7 @@ export function ColorPicker({ color, onChange, children, title, disabled }: Colo
   useEffect(() => {
     const newColor = transformColor('hex', color);
     setSelfColor(newColor);
-    setInputColor(newColor.hex);
+    setInputColor(color === '' ? '' : newColor.hex);
   }, [color]);
 
   const onSetHex = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,13 +156,26 @@ export function ColorPicker({ color, onChange, children, title, disabled }: Colo
         {children}
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="Lexiform__popoverContent" sideOffset={5}>
+        <Popover.Content 
+          className="Lexiform__popoverContent" 
+          sideOffset={5}
+          onFocusOutside={(e) => e.preventDefault()}
+        >
           {title && <div className="Lexiform__popoverTitle">{title}</div>}
           <div className="Lexiform__colorPickerWrapper" style={{ width: WIDTH }}>
             <div className="Lexiform__colorPickerInputWrapper">
               <label>Hex</label>
-              <input type="text" value={inputColor} onChange={onSetHex} className="Lexiform__colorPickerInput" />
+              <input type="text" value={inputColor} onChange={onSetHex} className="Lexiform__colorPickerInput" placeholder="#000000" />
             </div>
+            <button
+              className="Lexiform__colorPickerDefaultBtn"
+              onClick={() => {
+                setInputColor('');
+                onChange('');
+              }}
+            >
+              Default
+            </button>
             <div className="Lexiform__colorPickerBasic">
               {basicColors.map((basicColor) => (
                 <button

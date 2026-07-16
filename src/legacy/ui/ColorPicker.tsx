@@ -108,7 +108,7 @@ export default function ColorPicker({
     }
     const newColor = transformColor('hex', color);
     setSelfColor(newColor);
-    setInputColor(newColor.hex);
+    setInputColor(color === '' ? '' : newColor.hex);
   }, [color]);
 
   return (
@@ -116,7 +116,16 @@ export default function ColorPicker({
       className="color-picker-wrapper"
       style={{width: WIDTH}}
       ref={innerDivRef}>
-      <TextInput label="Hex" onChange={onSetHex} value={inputColor} />
+      <TextInput label="Hex" onChange={onSetHex} value={inputColor} placeholder="#000000" />
+      <button
+        className="color-picker-default-btn"
+        onClick={() => {
+          setInputColor('');
+          if (onChange) onChange('', skipAddingToHistoryStack);
+        }}
+      >
+        Default
+      </button>
       <div className="color-picker-basic-color">
         {basicColors.map((basicColor) => (
           <button
@@ -193,10 +202,12 @@ function MoveWrapper({className, style, onChange, children}: MoveWrapperProps) {
     if (e.button !== 0) {
       return;
     }
+    e.preventDefault();
 
     move(e);
 
     const onMouseMove = (_e: MouseEvent): void => {
+      _e.preventDefault();
       draggedRef.current = true;
       skipAddingToHistoryStack = true;
       move(_e);
@@ -205,6 +216,16 @@ function MoveWrapper({className, style, onChange, children}: MoveWrapperProps) {
     const onMouseUp = (_e: MouseEvent): void => {
       if (draggedRef.current) {
         skipAddingToHistoryStack = false;
+        
+        // Prevent the subsequent click event from closing the dropdown
+        const captureClick = (clickEvent: MouseEvent) => {
+          clickEvent.stopPropagation();
+          document.removeEventListener('click', captureClick, true);
+        };
+        document.addEventListener('click', captureClick, true);
+        setTimeout(() => {
+          document.removeEventListener('click', captureClick, true);
+        }, 0);
       }
 
       document.removeEventListener('mousemove', onMouseMove, false);

@@ -22,3 +22,4 @@ export { default as FigmaPlugin } from './components/plugins/extended/FigmaPlugi
 export { default as CollapsiblePlugin } from './components/plugins/extended/CollapsiblePlugin';
 export { PLAYGROUND_TRANSFORMERS as MarkdownTransformers } from './components/plugins/extended/MarkdownTransformers';
 export { FloatingTextFormatToolbarPlugin } from './components/plugins/FloatingTextFormatToolbarPlugin';
+export { default as DraggableBlockPlugin } from './components/plugins/extended/DraggableBlockPlugin';

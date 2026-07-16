@@ -15,6 +15,7 @@ It abstracts away the complexity of Lexical's architecture and provides a stunni
 - **Beautiful UI**: Polished toolbar with vanilla CSS combined with robust Radix UI primitives.
 - **Native Shadcn & Tailwind Compatibility**: Inherits global CSS variables and natively supports standard `.dark` and `.light` theme classes, syncing perfectly with `next-themes`.
 - **Slash Menu (`/`) Component Picker**: Type `/` to bring up a Notion-style block menu.
+- **Draggable Blocks**: Notion-style drag-and-drop block reordering.
 - **Floating Toolbar**: Select any text to instantly see a floating toolbar with quick formatting options (Bold, Italic, Link, Case formatting, Subscript, etc).
 - **Zero-Config JSON Compression**: Automatically strips Lexical defaults (like `version`, `direction`, `detail`) natively in the background, slashing the JSON payload size for ultra-lightweight database storage.
 - **Backend-Safe Serializers**: Includes SSR/backend-friendly utilities to seamlessly convert Lexical JSON to HTML/Markdown and vice-versa.
@@ -78,22 +79,27 @@ Using Lexiform in your app is as simple as importing the editor and its styleshe
 "use client"; // If using Next.js App Router
 
 import { useState } from 'react';
-import { 
-  LexicalEditor, 
-  ExtendedNodes, 
+import {
+  LexicalEditor,
+  ExtendedNodes,
   ComponentPickerPlugin,
-  EquationsPlugin,
-  ExcalidrawPlugin,
   ImagesPlugin,
-  YouTubePlugin 
+  YouTubePlugin,
+  DraggableBlockPlugin
 } from '@rishiap/lexiform';
-import '@rishiap/lexiform/styles.css'; // Don't forget the CSS!
+import '@rishiap/lexiform/styles.css'; 
+
+// If you installed the optional peer dependencies:
+import { EquationsPlugin } from '@rishiap/lexiform/equations';
+import '@rishiap/lexiform/equations.css';
+import { ExcalidrawPlugin } from '@rishiap/lexiform/excalidraw';
+import '@rishiap/lexiform/excalidraw.css';
 
 export default function MyEditor() {
   const [content, setContent] = useState<string>('');
 
   return (
-    <div className="border rounded-xl shadow-sm p-4">
+    <div className="border rounded-xl shadow-sm p-4 relative">
       <LexicalEditor
         value={content}
         onChange={(val) => setContent(val)}
@@ -102,6 +108,7 @@ export default function MyEditor() {
         nodes={ExtendedNodes}
         plugins={
           <>
+            <DraggableBlockPlugin />
             <ComponentPickerPlugin />
             <EquationsPlugin />
             <ExcalidrawPlugin />
@@ -179,6 +186,7 @@ const jsonFromMd = markdownToLexicalJSON(markdownString);
 ## Available Plugins
 Lexiform exports many plugins to extend the base editor. Simply pass them into the `plugins` prop alongside `ExtendedNodes` in the `nodes` prop.
 
+*   `DraggableBlockPlugin` (Drag & drop block reordering)
 *   `ComponentPickerPlugin` (Enables `/` menu)
 *   `EquationsPlugin` (Inline & Block KaTeX)
 *   `ExcalidrawPlugin` (Interactive whiteboards)

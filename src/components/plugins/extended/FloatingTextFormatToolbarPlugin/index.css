@@ -8,7 +8,8 @@
 
 .floating-text-format-popup {
   display: flex;
-  background: #fff;
+  background: var(--lexiform-popover, #ffffff);
+  border: 1px solid var(--lexiform-border, #e4e4e7);
   padding: 4px;
   vertical-align: middle;
   position: absolute;
@@ -67,7 +68,7 @@
 }
 
 .floating-text-format-popup .popup-item:hover:not([disabled]) {
-  background-color: #eee;
+  background-color: var(--lexiform-accent, #eee);
 }
 
 .floating-text-format-popup select.popup-item {
@@ -81,7 +82,7 @@
   -moz-appearance: none;
   width: 70px;
   font-size: 14px;
-  color: #777;
+  color: var(--lexiform-foreground, #777);
   text-overflow: ellipsis;
 }
 
@@ -95,7 +96,7 @@
   line-height: 20px;
   vertical-align: middle;
   font-size: 14px;
-  color: #777;
+  color: var(--lexiform-foreground, #777);
   text-overflow: ellipsis;
   width: 70px;
   overflow: hidden;
@@ -133,7 +134,7 @@
 
 .floating-text-format-popup .divider {
   width: 1px;
-  background-color: #eee;
+  background-color: var(--lexiform-border, #eee);
   margin: 0 4px;
 }
 

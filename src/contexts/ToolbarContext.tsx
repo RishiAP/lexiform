@@ -32,13 +32,13 @@ export const blockTypeToBlockName = {
 
 //disable eslint sorting rule for quick reference to toolbar state
 const INITIAL_TOOLBAR_STATE = {
-  bgColor: '#fff',
+  bgColor: '',
   blockType: 'paragraph' as keyof typeof blockTypeToBlockName,
   canRedo: false,
   canUndo: false,
   codeLanguage: '',
   elementFormat: 'left' as ElementFormatType,
-  fontColor: '#000',
+  fontColor: '',
   fontFamily: 'Arial',
   // Current font size in px
   fontSize: `${DEFAULT_FONT_SIZE}px`,

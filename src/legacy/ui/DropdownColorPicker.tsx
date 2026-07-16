@@ -16,6 +16,7 @@ type Props = {
   disabled?: boolean;
   buttonAriaLabel?: string;
   buttonClassName: string;
+  buttonIcon?: React.ReactNode;
   buttonIconClassName?: string;
   buttonLabel?: string;
   title?: string;

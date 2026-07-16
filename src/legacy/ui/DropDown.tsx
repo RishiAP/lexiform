@@ -158,6 +158,7 @@ export default function DropDown({
   disabled?: boolean;
   buttonAriaLabel?: string;
   buttonClassName: string;
+  buttonIcon?: ReactNode;
   buttonIconClassName?: string;
   buttonLabel?: string;
   children: ReactNode;
@@ -259,6 +260,7 @@ export default function DropDown({
         onClick={() => setShowDropDown(!showDropDown)}
         ref={buttonRef}>
         {buttonIconClassName && <span className={buttonIconClassName} />}
+        {buttonIcon && <span className="icon flex items-center justify-center">{buttonIcon}</span>}
         {buttonLabel && (
           <span className="text dropdown-button-text">{buttonLabel}</span>
         )}

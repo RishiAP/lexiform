@@ -24,6 +24,7 @@ import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
 import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
 import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
 import {AlwaysAppendParagraphPlugin} from './plugins/AlwaysAppendParagraphPlugin';
+import DraggableBlockPlugin from './plugins/extended/DraggableBlockPlugin';
 import {useState, useCallback, lazy, Suspense} from 'react';
 
 const CodeHighlightPlugin = lazy(() =>
@@ -133,6 +134,7 @@ function EditorShell({
   const [activeEditor, setActiveEditor] = useState(editor);
   const [isLinkEditMode, setIsLinkEditMode] = useState(false);
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+  const [draggableAnchorElem, setDraggableAnchorElem] = useState<HTMLDivElement | null>(null);
 
   const onRef = useCallback((_floatingAnchorElem: HTMLDivElement) => {
     if (_floatingAnchorElem !== null) {
@@ -192,6 +194,9 @@ function EditorShell({
             <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} setIsLinkEditMode={setIsLinkEditMode} />
             <TableActionMenuPlugin anchorElem={floatingAnchorElem} cellMerge={true} />
             <TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
+            {floatingAnchorElem && (
+              <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+            )}
           </>
         )}
 

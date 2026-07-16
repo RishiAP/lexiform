@@ -15,6 +15,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {DraggableBlockPlugin_EXPERIMENTAL} from '@lexical/react/LexicalDraggableBlockPlugin';
 import {$createParagraphNode, $getNearestNodeFromDOMNode} from 'lexical';
 import {useRef, useState} from 'react';
+import {GripVertical, Plus} from 'lucide-react';
 
 const DRAGGABLE_BLOCK_MENU_CLASSNAME = 'draggable-block-menu';
 
@@ -61,13 +62,17 @@ export default function DraggableBlockPlugin({
       menuRef={menuRef as RefObject<HTMLDivElement>}
       targetLineRef={targetLineRef as RefObject<HTMLDivElement>}
       menuComponent={
-        <div ref={menuRef} className="icon draggable-block-menu">
+        <div ref={menuRef} className="draggable-block-menu">
           <button
             title="Click to add below"
-            className="icon icon-plus"
+            className="icon-plus"
             onClick={insertBlock}
-          />
-          <div className="icon" />
+          >
+            <Plus size={16} />
+          </button>
+          <div className="icon">
+            <GripVertical size={16} />
+          </div>
         </div>
       }
       targetLineComponent={

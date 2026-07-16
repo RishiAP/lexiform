@@ -84,7 +84,9 @@ import {
   Redo,
   Link,
   CodeXml,
-  Smile
+  Smile,
+  Baseline,
+  PaintBucket
 } from 'lucide-react';
 
 import {
@@ -216,14 +218,14 @@ export function ToolbarPlugin({
       
       updateToolbarState(
         'fontColor',
-        $getSelectionStyleValueForProperty(selection, 'color', '#000'),
+        $getSelectionStyleValueForProperty(selection, 'color', ''),
       );
       updateToolbarState(
         'bgColor',
         $getSelectionStyleValueForProperty(
           selection,
           'background-color',
-          '#fff',
+          '',
         ),
       );
       updateToolbarState(
@@ -514,9 +516,7 @@ export function ToolbarPlugin({
             title="Text color"
           >
             <button className="Lexiform__toolbarButton" aria-label="Text color" title="Text color">
-              <div className="Lexiform__colorIndicator" style={{ backgroundColor: toolbarState.fontColor }}>
-                <span className="Lexiform__colorLetter">A</span>
-              </div>
+              <Baseline size={16} style={{ color: toolbarState.fontColor || 'var(--lexiform-foreground)' }} />
             </button>
           </ColorPicker>
 
@@ -527,8 +527,8 @@ export function ToolbarPlugin({
             title="Background color"
           >
             <button className="Lexiform__toolbarButton" aria-label="Background color" title="Background color">
-              <div className="Lexiform__colorIndicator" style={{ backgroundColor: toolbarState.bgColor, border: '1px solid #ccc' }}>
-                <span className="Lexiform__colorLetter">bg</span>
+              <div className="Lexiform__colorIndicator" style={{ backgroundColor: toolbarState.bgColor || 'transparent', border: '1px solid var(--lexiform-border)' }}>
+                <PaintBucket size={14} style={{ color: toolbarState.bgColor ? 'var(--lexiform-background)' : 'var(--lexiform-foreground)' }} />
               </div>
             </button>
           </ColorPicker>
