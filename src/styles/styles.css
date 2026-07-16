@@ -171,14 +171,14 @@
   position: absolute;
   text-overflow: ellipsis;
   top: 0;
-  left: 12px;
+  left: 36px;
   font-size: 15px;
   user-select: none;
   display: inline-block;
   pointer-events: none;
 
   @media (max-width: 768px) {
-    left: 0;
+    left: 15px;
   }
 }
 

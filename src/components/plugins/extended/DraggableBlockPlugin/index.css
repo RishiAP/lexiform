@@ -6,7 +6,6 @@
   position: absolute;
   left: -16px;
   top: 0;
-  margin-top: 4px;
   will-change: transform;
   display: flex;
   align-items: center;
@@ -50,6 +49,7 @@
 .draggable-block-menu .icon:hover,
 .draggable-block-menu .icon-plus:hover {
   background-color: var(--lexiform-accent, #efefef);
+  color: var(--lexiform-foreground, #3f3f46);
 }
 
 .draggable-block-target-line {
