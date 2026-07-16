@@ -9,6 +9,7 @@ export interface DropdownMenuProps {
   children: React.ReactNode;
   disabled?: boolean;
   title?: string;
+  contentClassName?: string;
 }
 
 export function DropdownMenu({
@@ -18,6 +19,7 @@ export function DropdownMenu({
   children,
   disabled = false,
   title,
+  contentClassName = 'Lexiform__dropdownContent',
 }: DropdownMenuProps) {
   return (
     <RadixDropdownMenu.Root>
@@ -27,7 +29,7 @@ export function DropdownMenu({
         <ChevronDown size={16} className="Lexiform__dropdownButtonChevron" />
       </RadixDropdownMenu.Trigger>
       <RadixDropdownMenu.Portal>
-        <RadixDropdownMenu.Content className="Lexiform__dropdownContent" sideOffset={5}>
+        <RadixDropdownMenu.Content className={contentClassName} sideOffset={5}>
           {children}
         </RadixDropdownMenu.Content>
       </RadixDropdownMenu.Portal>

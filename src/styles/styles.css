@@ -260,8 +260,36 @@
   min-width: 180px;
   z-index: 1000;
   border: 1px solid var(--lexiform-border);
-  max-height: 300px;
+  max-height: min(450px, 60vh);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lexiform-border) transparent;
+}
+
+.Lexiform__dropdownContent--no-scroll {
+  max-height: none !important;
+  overflow-y: visible !important;
+}
+
+.Lexiform__dropdownContent::-webkit-scrollbar,
+.typeahead-popover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.Lexiform__dropdownContent::-webkit-scrollbar-track,
+.typeahead-popover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.Lexiform__dropdownContent::-webkit-scrollbar-thumb,
+.typeahead-popover::-webkit-scrollbar-thumb {
+  background-color: var(--lexiform-border);
+  border-radius: 10px;
+}
+
+.Lexiform__dropdownContent::-webkit-scrollbar-thumb:hover,
+.typeahead-popover::-webkit-scrollbar-thumb:hover {
+  background-color: var(--lexiform-muted-foreground);
 }
 
 .Lexiform__dropdownContent * {

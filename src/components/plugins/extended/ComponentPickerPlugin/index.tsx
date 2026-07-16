@@ -40,7 +40,7 @@ import * as ReactDOM from 'react-dom';
 
 import useModal from '../../../../legacy/hooks/useModal';
 import catTypingGif from '../../../../legacy/images/cat-typing.gif';
-import { Type, Heading1, Heading2, Heading3, List, ListOrdered, CheckSquare, Quote, Code, Minus, Scissors, PenTool, BarChart2, Calculator, Image as ImageIcon, Columns, AlignLeft, AlignCenter, AlignRight, AlignJustify, Table as TableIcon, ChevronsUpDown, MonitorPlay, MessageCircle, LayoutTemplate } from 'lucide-react';
+import { Type, Heading1, Heading2, Heading3, List, ListOrdered, CheckSquare, Quote, Code, Minus, Scissors, PenTool, BarChart2, Calculator, Image as ImageIcon, Columns, AlignLeft, AlignCenter, AlignRight, AlignJustify, Table as TableIcon, ChevronsUpDown, MonitorPlay, MessageCircle, LayoutTemplate, Link } from 'lucide-react';
 import { YouTubeIcon, TwitterIcon, FigmaIcon } from '../../../../icons/EmbedIcons';
 
 import {INSERT_COLLAPSIBLE_COMMAND} from '../CollapsiblePlugin';
@@ -54,6 +54,7 @@ import {InsertTableDialog} from '../TablePlugin';
 import {InsertYouTubeDialog} from '../YouTubePlugin';
 import {InsertTweetDialog} from '../TwitterPlugin';
 import {InsertFigmaDialog} from '../FigmaPlugin';
+import {TOGGLE_LINK_INSERT_COMMAND} from '../FloatingLinkEditorPlugin';
 
 class ComponentPickerOption extends MenuOption {
   // What shows up in the editor
@@ -252,6 +253,11 @@ function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
       keywords: ['excalidraw', 'diagram', 'drawing'],
       onSelect: () =>
         editor.dispatchCommand(INSERT_EXCALIDRAW_COMMAND, undefined),
+    }),
+    new ComponentPickerOption('Link', {
+      icon: <Link size={16} />,
+      keywords: ['link', 'url', 'hyperlink'],
+      onSelect: () => editor.dispatchCommand(TOGGLE_LINK_INSERT_COMMAND, true),
     }),
     new ComponentPickerOption('Poll', {
       icon: <BarChart2 size={16} />,

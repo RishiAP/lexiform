@@ -23,6 +23,7 @@ import {
   $isTextNode,
   $isElementNode,
   LexicalEditor,
+  LexicalNode
 } from 'lexical';
 
 import {
@@ -190,7 +191,7 @@ const sanitizeIndent = (editor: LexicalEditor) => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
       selection.getNodes().forEach((node) => {
-        let current = node;
+        let current: LexicalNode | null = node;
         while (current !== null) {
           if ($isElementNode(current)) {
             const indent = current.getIndent();

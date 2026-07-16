@@ -70,7 +70,7 @@ export function InsertEmojiDialog({
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', height: '450px'}}>
+    <div style={{display: 'flex', flexDirection: 'column', height: 'min(450px, 60vh)'}}>
       <div style={{paddingBottom: '12px', borderBottom: '1px solid var(--lexiform-border)'}}>
         <input
           type="text"

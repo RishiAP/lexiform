@@ -20,7 +20,7 @@ import {ToolbarContext} from '../contexts/ToolbarContext';
 import {ToolbarPlugin} from './Toolbar/ToolbarPlugin';
 import {OnChangePlugin} from './plugins/OnChangePlugin';
 import {ControlledValuePlugin} from './plugins/ControlledValuePlugin';
-import {FloatingLinkEditorPlugin} from './plugins/FloatingLinkEditorPlugin';
+import FloatingLinkEditorPlugin from './plugins/extended/FloatingLinkEditorPlugin';
 import {FloatingTextFormatToolbarPlugin} from './plugins/FloatingTextFormatToolbarPlugin';
 import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
 import {AlwaysAppendParagraphPlugin} from './plugins/AlwaysAppendParagraphPlugin';

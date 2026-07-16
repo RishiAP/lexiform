@@ -105,6 +105,7 @@ import {ColorPicker} from '../../ui/ColorPicker';
 import {DropdownMenu, DropdownMenuItem} from '../../ui/DropdownMenu';
 import useModal from '../../legacy/hooks/useModal';
 import {InsertEmojiDialog} from '../plugins/extended/EmojiPickerPlugin/InsertEmojiDialog';
+import {TOGGLE_LINK_INSERT_COMMAND} from '../plugins/extended/FloatingLinkEditorPlugin';
 
 
 
@@ -353,16 +354,23 @@ export function ToolbarPlugin({
 
   const insertLink = useCallback(() => {
     if (!toolbarState.isLink) {
-      setIsLinkEditMode(true);
-      activeEditor.dispatchCommand(
-        TOGGLE_LINK_COMMAND,
-        sanitizeUrl('https://'),
-      );
+      activeEditor.getEditorState().read(() => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection) && selection.isCollapsed()) {
+          activeEditor.dispatchCommand(TOGGLE_LINK_INSERT_COMMAND, true);
+        } else {
+          setIsLinkEditMode(true);
+          activeEditor.dispatchCommand(
+            TOGGLE_LINK_COMMAND,
+            sanitizeUrl('https://'),
+          );
+        }
+      });
     } else {
       setIsLinkEditMode(false);
       activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
     }
-  }, [activeEditor, setIsLinkEditMode, toolbarState.isLink]);
+  }, [activeEditor, setIsLinkEditMode, toolbarState.isLink, showModal]);
 
   const onCodeLanguageSelect = useCallback(
     (value: string) => {
@@ -546,6 +554,7 @@ export function ToolbarPlugin({
             buttonIcon={<Smile size={16} />}
             buttonClassName="Lexiform__toolbarButton"
             title="Insert Emoji"
+            contentClassName="Lexiform__dropdownContent Lexiform__dropdownContent--no-scroll"
           >
             <div style={{ width: '320px', padding: '8px' }}>
               <InsertEmojiDialog activeEditor={activeEditor} onClose={() => {

@@ -20,6 +20,9 @@ import {InsertYouTubeDialog} from '../plugins/extended/YouTubePlugin';
 import {InsertTweetDialog} from '../plugins/extended/TwitterPlugin';
 import {InsertFigmaDialog} from '../plugins/extended/FigmaPlugin';
 
+import {$getSelection, $isRangeSelection} from 'lexical';
+import {TOGGLE_LINK_INSERT_COMMAND} from '../plugins/extended/FloatingLinkEditorPlugin';
+
 export function InsertControls({
   editor,
   disabled = false,
@@ -41,7 +44,14 @@ export function InsertControls({
       >
         <DropdownMenuItem
           onClick={() => {
-            editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
+            editor.getEditorState().read(() => {
+              const selection = $getSelection();
+              if ($isRangeSelection(selection) && selection.isCollapsed()) {
+                editor.dispatchCommand(TOGGLE_LINK_INSERT_COMMAND, true);
+              } else {
+                editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
+              }
+            });
           }}
         >
           <span className="Lexiform__dropdownIcon"><Link size={16} /></span>
