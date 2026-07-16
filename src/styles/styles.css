@@ -156,13 +156,8 @@
   font-size: 15px;
   outline: none;
   padding-bottom: 20px;
-  padding-left: 12px;
   width: 100%;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-  }
 }
 
 .LexiformContentEditable__placeholder {
