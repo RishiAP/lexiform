@@ -34,8 +34,25 @@
   overflow: hidden;
 }
 
+.KatexEquationAlterer_centerRow math-field {
+  font-size: 1.2em;
+  min-height: 48px;
+}
+
+
 .KatexEquationAlterer_textArea {
   width: 100%;
   resize: none;
   padding: 7px;
 }
+
+@media (max-width: 768px) {
+  .KatexEquationAlterer_centerRow math-field::part(virtual-keyboard-toggle) {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    margin: 0;
+  }
+}
+
+

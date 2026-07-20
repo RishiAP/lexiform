@@ -3,14 +3,17 @@
   min-width: 20px;
   min-height: 20px;
   border-radius: 4px;
-  padding: 2px 4px;
+  padding: 2px 6px;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition: background-color 0.15s, box-shadow 0.15s;
   color: inherit;
+  font-size: 1em;
+  position: relative;
 }
 
 .EquationComponent__container:hover {
-  background-color: var(--lexiform-gray-100, #f3f4f6);
+  background-color: var(--lexiform-accent, rgba(0,0,0,0.06));
+  box-shadow: 0 0 0 2px var(--lexiform-border, rgba(0,0,0,0.1));
 }
 
 .EquationComponent__container--block {
@@ -20,10 +23,33 @@
   margin: 8px 0;
 }
 
-.lexiform-dark .EquationComponent__container:hover {
-  background-color: var(--lexiform-gray-800, #1f2937);
+/* Subtle "double-click to edit" tooltip shown on hover */
+.EquationComponent__editHint {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--lexiform-popover, #1c1c1c);
+  color: var(--lexiform-popover-foreground, #fff);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.15s;
 }
 
-.lexiform-dark .EquationComponent__container .katex {
-  color: var(--lexiform-gray-50, #f9fafb);
+.EquationComponent__container:hover .EquationComponent__editHint {
+  display: block;
+  opacity: 1;
 }
+
+.EquationComponent__container--block .EquationComponent__editHint {
+  bottom: calc(100% + 4px);
+  left: 50%;
+}
+
+

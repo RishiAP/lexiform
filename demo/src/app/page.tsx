@@ -41,7 +41,6 @@ function CopyCommand({ text }: { text: string }) {
 }
 
 export default function Home() {
-  console.log('Lexiform Demo Reloaded 15');
   const [content, setContent] = useState<string>(`{"root":{"children":[{"children":[{"text":"Welcome to Lexiform!","type":"text"}],"type":"heading","tag":"h1"},{"children":[{"text":"Type '/' to open the component picker and insert equations, polls, tables, and more!","type":"text"}],"type":"paragraph"}],"type":"root"}}`);
   const { setTheme, resolvedTheme } = useTheme();
 

@@ -50,7 +50,7 @@ export function InsertYouTubeDialog({
   };
 
   return (
-    <div style={{ minWidth: '400px', maxWidth: '100%' }}>
+    <div style={{ width: '400px', maxWidth: '100%' }}>
       <div className="Input__wrapper">
         <label className="Input__label">YouTube URL</label>
         <input

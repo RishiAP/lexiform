@@ -747,3 +747,8 @@
   background-color: var(--lexiform-border, #e4e4e7);
   margin: 4px 0;
 }
+
+/* Fix mathlive mobile ghost clicks inside the virtual keyboard (like the hamburger menu) */
+math-virtual-keyboard {
+  touch-action: manipulation;
+}

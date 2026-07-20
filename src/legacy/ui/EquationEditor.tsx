@@ -28,7 +28,7 @@ function EquationEditor(
     setEquation((event.target as HTMLInputElement).value);
   };
 
-  return inline && isHTMLElement(forwardedRef) ? (
+  return inline ? (
     <span className="EquationEditor_inputBackground">
       <span className="EquationEditor_dollarSign">$</span>
       <input

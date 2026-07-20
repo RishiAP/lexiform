@@ -1,7 +1,7 @@
 {
   "name": "@rishiap/lexiform",
   "type": "module",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Lexical-based editor as a drop-in React component and backend-safe serializers",
   "author": "RishiAP <debjyotim2019@gmail.com>",
   "license": "MIT",
